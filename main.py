@@ -1,6 +1,7 @@
-from Parser import csv_parser
+from Parser import CsvParser
+from Email import EmailProcessor
 
-csv_parser = csv_parser.CSV_parser()
+csv_parser = CsvParser.CSV_parser()
 
 print("total file " + str(len(csv_parser.files)))
 
@@ -13,8 +14,15 @@ files = list(filter(lambda f: f.protocol == 'udp' and f.country_short == 'JP', c
 
 print("JP file " + str(len(files)))
 
-for f in files:
-    f.save_file('test_files')
+# for f in files:
+#     f.save_file('test_files')
+
+
+if len(files) > 0:
+    EmailProcessor.processMail(files)
+
+
+
 
 
 

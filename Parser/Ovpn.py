@@ -1,4 +1,5 @@
 import base64
+from io import *
 
 class Ovpn:
 

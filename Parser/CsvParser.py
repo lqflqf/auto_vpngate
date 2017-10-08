@@ -1,4 +1,4 @@
-from Parser.ovpn import Ovpn
+from Parser.Ovpn import Ovpn
 
 class CSV_parser:
     path = None
@@ -13,8 +13,8 @@ class CSV_parser:
         import urllib.request;
         with urllib.request.urlopen(self.path) as response:
             lines = response.read().decode("utf-8").split('\r\n')
-        for i in lines[2:-2]:
-            self.files.append(Ovpn(i))
+        for ln in lines[2:-2]:
+            self.files.append(Ovpn(ln))
 
 
 
