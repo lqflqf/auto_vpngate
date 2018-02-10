@@ -10,16 +10,16 @@ print("total file " + str(len(csv_parser.files)))
 #                and f.uptime >= 86400000, \
 #                csv_parser.files))
 
-files = list(filter(lambda f: f.protocol == 'udp' and f.country_short == 'JP', csv_parser.files))
+files = list(filter(lambda f: f.protocol == 'udp' and f.country_short in ['JP', 'US'], csv_parser.files))
 
-print("JP file " + str(len(files)))
+print("files " + str(len(files)))
 
-# for f in files:
-#     f.save_file('test_files')
+for f in files:
+    f.save_file('test_files')
 
 
-if len(files) > 0:
-    EmailProcessor.processMail(files)
+# if len(files) > 0:
+#     EmailProcessor.processMail(files)
 
 
 
