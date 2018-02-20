@@ -1,6 +1,6 @@
 from Parser import CsvParser
 from Email import EmailProcessor
-from collections import Counter
+from itertools import groupby
 
 csv_parser = CsvParser.CSV_parser()
 
@@ -12,14 +12,16 @@ print("")
 #                and f.uptime >= 86400000, \
 #                csv_parser.files))
 
-cnt = Counter()
 
-for f in csv_parser.files:
-    cnt[f.country_long + ' ' + f.protocol] += 1
+def name_func(f):
+    return f.country_long + " " + f.protocol
 
 
-for k, v in sorted(cnt.items()):
-    print(k + ": " + str(v))
+g_iter = (groupby(sorted(csv_parser.files, key=name_func), key=name_func))
+
+for k, g in g_iter:
+    print(k + ": " + str(len(list(g))))
+
 
 files_to_save = list(filter(lambda f: f.protocol in ['udp'] and f.country_short in ['JP', 'US'], csv_parser.files))
 
