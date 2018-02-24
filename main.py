@@ -27,12 +27,14 @@ files_to_save = list(filter(lambda f: f.protocol in ['udp'] and f.country_short 
 print("")
 print("saved files " + str(len(files_to_save)))
 
-for f in files_to_save:
-    f.save_file('test_files')
+buffer = EmailProcessor.addToZip(files_to_save)
+
+with open("ovpn_files.zip", "w") as ofile:
+    ofile.write(buffer)
+    ofile.close()
 
 
-# if len(files) > 0:
-#     EmailProcessor.processMail(files)
+print("Done!")
 
 
 
