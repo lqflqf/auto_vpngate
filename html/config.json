@@ -1,0 +1,15 @@
+{
+  "urls": [
+    "http://82.102.28.62:43952"
+  ],
+  "countries": [
+    "Japan"
+  ],
+  "protocol": [
+    "tcp",
+    "udp"
+  ],
+  "timeout": 300,
+  "retry": 2,
+  "save_path": "html_test_folder"
+}
