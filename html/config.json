@@ -1,12 +1,11 @@
 {
   "urls": [
-    "http://82.102.28.62:43952"
+    "http://www.vpngate.net"
   ],
   "countries": [
     "Japan"
   ],
   "protocol": [
-    "tcp",
     "udp"
   ],
   "timeout": 300,

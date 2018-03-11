@@ -37,39 +37,23 @@ class VgRow:
 
     __nl__ = '\n'
     __eq_sign__ = '='
-    __location__ = '/common/openvpn_download.aspx'
 
     def __init__(self, url: str, pq_obj: PyQuery):
-        self.__url__ = url
-        self.__country__ = pq_obj.children().eq(0).text()
-        self.__session_no__ = self.__to_int__(pq_obj.children().eq(2).text().split(self.__nl__)[0].split()[0])
-        self.__alive_days__ = self.__to_int__(pq_obj.children().eq(2).text().split(self.__nl__)[1].split()[0])
-        self.__bandwidth__ = self.__to_float__(pq_obj.children().eq(3).text().split(self.__nl__)[0].split()[0])
-        self.__ping__ = self.__to_int__(pq_obj.children().eq(3).text().split(self.__nl__)[1].split()[1])
+        self.url = url
+        self.country = pq_obj.children().eq(0).text()
+        self.session_no = self.__to_int__(pq_obj.children().eq(2).text().split(self.__nl__)[0].split()[0])
+        self.alive_days = self.__to_int__(pq_obj.children().eq(2).text().split(self.__nl__)[1].split()[0])
+        self.bandwidth = self.__to_float__(pq_obj.children().eq(3).text().split(self.__nl__)[0].split()[0])
+        self.ping = self.__to_int__(pq_obj.children().eq(3).text().split(self.__nl__)[1].split()[1])
 
         hrefl = pq_obj.children().eq(6).find('a').attr('href').split('?')[1].split('&')
 
-        self.__ip__ = hrefl[1].split(self.__eq_sign__)[1]
-        self.__tcp__ = hrefl[2].split(self.__eq_sign__)[1]
-        self.__udp__ = hrefl[3].split(self.__eq_sign__)[1]
-        self.__sid__ = hrefl[4].split(self.__eq_sign__)[1]
-        self.__hid__ = hrefl[5].split(self.__eq_sign__)[1]
-        self.__udp_params__ = {
-            'sid': self.__sid__,
-            'host': self.__ip__,
-            'hid': self.__hid__,
-            'udp': '1',
-            'port': self.__udp__
-        }
-        self.__tcp_params__ = {
-            'sid': self.__sid__,
-            'host': self.__ip__,
-            'hid': self.__hid__,
-            'tcp': '1',
-            'port': self.__tcp__
-        }
-
-        self.__filename__ = self.__ip__ + '_' + self.__udp__ + '.ovpn'
+        self.ip = hrefl[1].split(self.__eq_sign__)[1]
+        self.tcp = hrefl[2].split(self.__eq_sign__)[1]
+        self.udp = hrefl[3].split(self.__eq_sign__)[1]
+        self.sid = hrefl[4].split(self.__eq_sign__)[1]
+        self.hid = hrefl[5].split(self.__eq_sign__)[1]
+        self.link = None
 
     def __to_int__(self, str):
         try:
@@ -85,35 +69,40 @@ class VgRow:
             r = -1.0
         return r
 
-    def get_udp_file(self):
-        try:
-            r = requests.get(self.__url__ + self.__location__, params=self.__udp_params__)
-            if r.status_code == 200:
-                return r.content
-        except requests.exceptions.RequestException:
-            pass
+    def getLink(self):
+        if self.link is None:
+            self.link = []
+            if self.tcp != '0':
+                self.link.append(VgLink('tcp', self))
+            if self.udp != '0':
+                self.link.append(VgLink('udp', self))
 
-        return None
+        return self.link
 
-    def get_tcp_file(self):
-        try:
-            r = requests.get(self.__url__ + self.__location__, params=self.__tcp_params__)
-            if r.status_code == 200:
-                return r.content
-        except requests.exceptions.RequestException:
-            pass
+class VgLink:
 
-        return None
+    __location__ = '/common/openvpn_download.aspx'
 
-    @property
-    def filename(self):
-        return self.__filename__
+    def __init__(self, protocol, vgrow_obj):
+        self.protocol = protocol
+        self.vgrow = vgrow_obj
 
-    @property
-    def country(self):
-        return self.__country__
+        self.params =  {
+            'sid': self.vgrow.sid,
+            'host': self.vgrow.ip,
+            'hid': self.vgrow.hid
+        }
+        if self.protocol == 'tcp':
+            self.params['tcp'] = '1'
+            self.params['port'] = self.vgrow.tcp
+        else:
+            self.params['udp'] = '1'
+            self.params['port'] = self.vgrow.udp
 
+        self.filename = self.vgrow.country + '_' + self.vgrow.ip + '_' + self.protocol + '_' +\
+                        self.params['port'] + '.ovpn'
 
+        self.url = self.vgrow.url + self.__location__
 
 
 class HtmlParser:
@@ -140,7 +129,7 @@ class HtmlParser:
             except requests.exceptions.RequestException:
                 continue
 
-    def __get_dl_links__(self):
+    def __get_rows__(self):
         tab_id = 'table#vg_hosts_table_id'
         tab_data_cls0 = 'vg_table_row_0'
         tab_data_cls1 = 'vg_table_row_1'
@@ -154,15 +143,24 @@ class HtmlParser:
 
     def process(self):
         self.__get_html__()
-        self.__get_dl_links__()
+        self.__get_rows__()
+
+        files_to_save = []
 
         for r in filter(lambda e: e.country in self.__honfig__.countries, self.__rows__):
-            with open(os.path.join(self.__honfig__.save_path, r.filename), 'wb') as f:
-                fc = r.get_udp_file()
-                if fc is not None:
-                    f.write(r.get_udp_file())
-                f.close()
+            dl = filter(lambda e: e.protocol in self.__honfig__.protocols, r.getLink())
+            for d in dl:
+                try:
+                    r = requests.get(d.url, params=d.params, timeout=self.__honfig__.timeout)
+                    if r.status_code == 200:
+                        files_to_save.append((d.filename, r.content))
+                except requests.exceptions.RequestException:
+                    continue
 
+        for f in files_to_save:
+            with open(self.__honfig__.save_path + '/' + f[0], 'wb') as fw:
+                fw.write(f[1])
+                fw.close()
 
 
 if __name__ == '__main__':
