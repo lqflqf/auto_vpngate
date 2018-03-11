@@ -147,7 +147,9 @@ class HtmlParser:
 
         files_to_save = []
 
-        for r in filter(lambda e: e.country in self.__honfig__.countries, self.__rows__):
+        for r in filter(lambda e: e.country in self.__honfig__.countries and \
+                                  e.session_no > 10 and \
+                                  e.bandwidth > 20, self.__rows__):
             dl = filter(lambda e: e.protocol in self.__honfig__.protocols, r.getLink())
             for d in dl:
                 try:
