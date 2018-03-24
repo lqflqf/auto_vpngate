@@ -1,6 +1,6 @@
 {
   "urls": [
-    "http://ngn3-ppp2459.osaka.sannet.ne.jp:28896"
+    "http://www.vpngate.net"
   ],
   "countries": [
     "Japan"
@@ -8,6 +8,8 @@
   "protocol": [
     "udp"
   ],
+  "session number": 0,
+  "bandwidth": 20,
   "timeout": 300,
   "retry": 2,
   "save_path": "html_test_folder"

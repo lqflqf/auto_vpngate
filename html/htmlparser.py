@@ -2,6 +2,10 @@ import json
 import requests
 from pyquery import PyQuery
 import os
+from multiprocessing import Pool
+import itertools
+import time
+
 
 class Config:
 
@@ -28,6 +32,14 @@ class Config:
     @property
     def retry(self):
         return self.__config_dic__['retry']
+
+    @property
+    def session_no(self):
+        return self.__config_dic__['session number']
+
+    @property
+    def bandwidth(self):
+        return self.__config_dic__['bandwidth']
 
     @property
     def save_path(self):
@@ -106,8 +118,17 @@ class VgLink:
 
 
 class HtmlParser:
-
     __lang__ = '/en/'
+    __tab_id__ = 'table#vg_hosts_table_id'
+    __tab_data_cls0__ = 'vg_table_row_0'
+    __tab_data_cls1__ = 'vg_table_row_1'
+    __tab_header_cls__ = 'vg_table_header'
+    __form_data__ = {
+        "__VIEWSTATE": "/wEPDwULLTE1ODQzMDg1NDMPZBYCAgEPZBYKZg8PFgIeBFRleHQF1AFZb3VyIElQOiAyMTAuMTMyLjE1MS4xNTMuYXAuZHRpLm5lLmpwICgxNTMuMTUxLjEzMi4yMTApPEJSPjxpbWcgc3JjPScuLi9pbWFnZXMvZmxhZ3MvSlAucG5nJyB3aWR0aD0nMzInIGhlaWdodD0nMzInIC8+PEJSPllvdXIgY291bnRyeTogSmFwYW48QlI+PGEgaHJlZj0nI0xJU1QnPkxldCdzIGNoYW5nZSB5b3VyIElQIGFkZHJlc3MgYnkgdXNpbmcgVlBOIEdhdGUhPC9hPmRkAgEPDxYCHwAFYzxiPlRvZGF5OiAxLDM1MCw3MjggY29ubmVjdGlvbnMsIEN1bXVsYXRpdmU6IDMsODk0LDQyMyw1MDYgY29ubmVjdGlvbnMsIFRyYWZmaWM6IDEwNCw4MjguNjMgVEIuPC9iPmRkAgMPDxYCHwAFBTMsMTA2ZGQCBA8PFgIfAAU4PGI+Myw4OTQsNDIzLDUwNiBWUE4gY29ubmVjdGlvbnMgZnJvbSAyMzMgQ291bnRyaWVzLjwvYj5kZAIGDw8WAh8ABQQ3MTY2ZGQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgQFC0NfU29mdEV0aGVyBQZDX0wyVFAFCUNfT3BlblZQTgUGQ19TU1RQNnRU35SW9+iAX1zUgCT5Wglx0zNUdzN1b/QtfmMosms=",
+        "__VIEWSTATEGENERATOR": "1A8A0CA9",
+        "__EVENTVALIDATION": "/wEdAAeSJ4zco66jEJfXkVLyEXnWZSmLidaMQ3gg2jFmkkuEoSCbR2H52ATFMg5mk6aQHX3LISMg9/mywZPt3Ki4BVA7RhcLWIOHmHJ6h2VtXvwLieWw6g9beu/2J/0raZOGI2E/WMskeKo19Gyidl+m11dTQ4jHStBhHAmWMfq++a085mllmWeyjqtOosslKzVL2wQ=",
+        "C_OpenVPN": "on"
+        }
 
     def __init__(self, config: Config):
         self.__honfig__ = config
@@ -115,47 +136,36 @@ class HtmlParser:
         self.__rows__ = []
 
     def __get_html__(self):
-        form_data = {"__VIEWSTATE":"/wEPDwULLTE1ODQzMDg1NDMPZBYCAgEPZBYKZg8PFgIeBFRleHQF1AFZb3VyIElQOiAyMTAuMTMyLjE1MS4xNTMuYXAuZHRpLm5lLmpwICgxNTMuMTUxLjEzMi4yMTApPEJSPjxpbWcgc3JjPScuLi9pbWFnZXMvZmxhZ3MvSlAucG5nJyB3aWR0aD0nMzInIGhlaWdodD0nMzInIC8+PEJSPllvdXIgY291bnRyeTogSmFwYW48QlI+PGEgaHJlZj0nI0xJU1QnPkxldCdzIGNoYW5nZSB5b3VyIElQIGFkZHJlc3MgYnkgdXNpbmcgVlBOIEdhdGUhPC9hPmRkAgEPDxYCHwAFYzxiPlRvZGF5OiAxLDM1MCw3MjggY29ubmVjdGlvbnMsIEN1bXVsYXRpdmU6IDMsODk0LDQyMyw1MDYgY29ubmVjdGlvbnMsIFRyYWZmaWM6IDEwNCw4MjguNjMgVEIuPC9iPmRkAgMPDxYCHwAFBTMsMTA2ZGQCBA8PFgIfAAU4PGI+Myw4OTQsNDIzLDUwNiBWUE4gY29ubmVjdGlvbnMgZnJvbSAyMzMgQ291bnRyaWVzLjwvYj5kZAIGDw8WAh8ABQQ3MTY2ZGQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgQFC0NfU29mdEV0aGVyBQZDX0wyVFAFCUNfT3BlblZQTgUGQ19TU1RQNnRU35SW9+iAX1zUgCT5Wglx0zNUdzN1b/QtfmMosms=",
-                     "__VIEWSTATEGENERATOR":"1A8A0CA9",
-                     "__EVENTVALIDATION":"/wEdAAeSJ4zco66jEJfXkVLyEXnWZSmLidaMQ3gg2jFmkkuEoSCbR2H52ATFMg5mk6aQHX3LISMg9/mywZPt3Ki4BVA7RhcLWIOHmHJ6h2VtXvwLieWw6g9beu/2J/0raZOGI2E/WMskeKo19Gyidl+m11dTQ4jHStBhHAmWMfq++a085mllmWeyjqtOosslKzVL2wQ=",
-                     "C_OpenVPN":"on"
-                     }
-
         for u in self.__honfig__.urls:
             try:
-                r = requests.post(u + self.__lang__, data=form_data, timeout=self.__honfig__.timeout)
+                r = requests.post(u + self.__lang__, data=self.__form_data__, timeout=self.__honfig__.timeout)
                 if r.status_code == 200:
                     self.__html__.append((u, r.text))
+                    print("html scraped")
             except requests.exceptions.RequestException:
                 continue
 
     def __get_rows__(self):
-        tab_id = 'table#vg_hosts_table_id'
-        tab_data_cls0 = 'vg_table_row_0'
-        tab_data_cls1 = 'vg_table_row_1'
-        tab_header_cls = 'vg_table_header'
-
         for u, h in self.__html__:
-            tabq = PyQuery(h).find(tab_id).eq(2).find('tr')
+            tabq = PyQuery(h).find(self.__tab_id__).eq(2).find('tr')
             for r in tabq.items():
-                if r.children().hasClass(tab_data_cls0) or r.children().hasClass(tab_data_cls1):
+                if r.children().hasClass(self.__tab_data_cls0__) or r.children().hasClass(self.__tab_data_cls1__):
                     self.__rows__.append(VgRow(u, r))
 
     def process(self):
+        now = time.time()
         self.__get_html__()
         self.__get_rows__()
 
         files_to_save = []
 
-        for r in filter(lambda e: e.country in self.__honfig__.countries and \
-                                  e.session_no > 10 and \
-                                  e.bandwidth > 20, self.__rows__):
-            dl = filter(lambda e: e.protocol in self.__honfig__.protocols, r.getLink())
+        for row in filter(self.__is_row_selected__, self.__rows__):
+            dl = filter(self.__is_link_selected__, row.getLink())
             for d in dl:
                 try:
-                    r = requests.get(d.url, params=d.params, timeout=self.__honfig__.timeout)
-                    if r.status_code == 200:
-                        files_to_save.append((d.filename, r.content))
+                    response = requests.get(d.url, params=d.params, timeout=self.__honfig__.timeout)
+                    if response.status_code == 200:
+                        files_to_save.append((d.filename, response.content))
                 except requests.exceptions.RequestException:
                     continue
 
@@ -164,18 +174,78 @@ class HtmlParser:
                 fw.write(f[1])
                 fw.close()
 
+        print(time.time()-now)
+
+    def __is_row_selected__(self, e: VgRow):
+        return e.country in self.__honfig__.countries and \
+               e.session_no > self.__honfig__.session_no and \
+               e.bandwidth > self.__honfig__.bandwidth
+
+    def __is_link_selected__(self, e: VgLink):
+        return e.protocol in self.__honfig__.protocols
+
+    @staticmethod
+    def __is_not_none__(e):
+        return True if e is not None else False
+
+    def __url_to_html__(self, url):
+        try:
+            r = requests.post(url + self.__lang__, data=self.__form_data__, timeout=self.__honfig__.timeout)
+            if r.status_code == 200:
+                return url, r.content
+        except requests.exceptions.RequestException:
+            return None
+
+    def __row_to_vgrow__(self, ur)->VgRow:
+        if ur[1].children().hasClass(self.__tab_data_cls0__) or ur[1].children().hasClass(self.__tab_data_cls1__):
+            return VgRow(ur[0], ur[1])
+
+    def __vgrow_to_vglink__(self, vgrow: VgRow):
+        if self.__is_row_selected__(vgrow):
+            return filter(self.__is_link_selected__, vgrow.getLink())
+
+    def __vglink_to_file__(self, vglink: VgLink):
+        try:
+            response = requests.get(vglink.url, params=vglink.params, timeout=self.__honfig__.timeout)
+            if response.status_code == 200:
+                with open(self.__honfig__.save_path + '/' + vglink.filename, 'wb') as fw:
+                    n = fw.write(response.content)
+                    fw.close()
+                    return n
+        except requests.exceptions.RequestException:
+            return 0
+
+    def process_par(self):
+        now = time.time()
+        with Pool() as pool:
+            self.__html__ = pool.map(self.__url_to_html__, self.__honfig__.urls)
+
+            print("html ready")
+
+            for u, h in filter(self.__is_not_none__, self.__html__):
+
+                tabq = PyQuery(h).find(self.__tab_id__).eq(2).find('tr')
+                for r in tabq.items():
+                    if r.children().hasClass(self.__tab_data_cls0__) or r.children().hasClass(self.__tab_data_cls1__):
+                        self.__rows__.append(VgRow(u, r))
+
+            vglinks = pool.map(self.__vgrow_to_vglink__, self.__rows__)
+
+            vgfiles = pool.map(self.__vglink_to_file__, itertools.chain.from_iterable(filter(self.__is_not_none__, vglinks)))
+
+            print(vgfiles)
+
+            print(time.time()-now)
+
+
 
 if __name__ == '__main__':
+
     c = Config()
-    print(c.urls)
-    print(c.countries)
-    print(c.protocols)
-    print(str(c.timeout))
-    print(str(c.retry))
-    print(c.save_path)
 
     p = HtmlParser(c)
-    p.process()
+
+    p.process_par()
 
 
 
