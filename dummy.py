@@ -1,11 +1,21 @@
 from multiprocessing import Pool
 
 
-i = [(1,2), (3,4)]
+
 def d(e):
-    return e[0] + e[1]
+    return e*2
+
+def g():
+    i = 0
+    while i < 10:
+        yield i
+        i += 1
+
+l = (i for i in range(10))
+
+
 
 if __name__ == '__main__':
     with Pool() as p:
-        pm = p.map(d, i)
+        pm = p.map(d, g())
         print(pm)

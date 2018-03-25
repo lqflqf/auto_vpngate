@@ -4,6 +4,7 @@ from pyquery import PyQuery
 import os
 from multiprocessing import Pool
 import itertools
+import pathlib
 import time
 
 
@@ -134,6 +135,7 @@ class HtmlParser:
         self.__honfig__ = config
         self.__html__ = []
         self.__rows__ = []
+        self.__path_obj__ = self.__create_folder__()
 
     def __get_html__(self):
         for u in self.__honfig__.urls:
@@ -208,15 +210,24 @@ class HtmlParser:
         try:
             response = requests.get(vglink.url, params=vglink.params, timeout=self.__honfig__.timeout)
             if response.status_code == 200:
-                with open(self.__honfig__.save_path + '/' + vglink.filename, 'wb') as fw:
+                with (self.__path_obj__ / vglink.filename).open(mode='wb') as fw:
                     n = fw.write(response.content)
                     fw.close()
                     return n
         except requests.exceptions.RequestException:
             return 0
 
+    def __create_folder__(self):
+        p = pathlib.Path(self.__honfig__.save_path)
+        p.mkdir(exist_ok=True)
+        q = p / time.asctime()
+        q.mkdir(exist_ok=True)
+        return q
+
+
     def process_par(self):
         now = time.time()
+
         with Pool() as pool:
             self.__html__ = pool.map(self.__url_to_html__, self.__honfig__.urls)
 
@@ -236,6 +247,7 @@ class HtmlParser:
             print(vgfiles)
 
             print(time.time()-now)
+
 
 
 
