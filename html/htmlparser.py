@@ -220,7 +220,7 @@ class HtmlParser:
     def __create_folder__(self):
         p = pathlib.Path(self.__honfig__.save_path)
         p.mkdir(exist_ok=True)
-        q = p / time.asctime()
+        q = p / time.asctime().replace(':', '')
         q.mkdir(exist_ok=True)
         return q
 
@@ -235,8 +235,8 @@ class HtmlParser:
 
             for u, h in filter(self.__is_not_none__, self.__html__):
 
-                tabq = PyQuery(h).find(self.__tab_id__).eq(2).find('tr')
-                for r in tabq.items():
+                tabrow = PyQuery(h).find(self.__tab_id__).eq(2).find('tr')
+                for r in tabrow.items():
                     if r.children().hasClass(self.__tab_data_cls0__) or r.children().hasClass(self.__tab_data_cls1__):
                         self.__rows__.append(VgRow(u, r))
 

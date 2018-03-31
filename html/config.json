@@ -12,5 +12,5 @@
   "bandwidth": 20,
   "timeout": 300,
   "retry": 2,
-  "save_path": "/Users/qifan/html_test_folder"
+  "save_path": "/Users/qifan/vpngate_config"
 }
