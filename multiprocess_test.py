@@ -1,25 +1,57 @@
 import time
 from multiprocessing import Pool
+import aiohttp
 import requests
+import asyncio
+import itertools
 
 
-def f3(e):
-    return requests.head(e).status_code
+def benchmark(func):
+    def wrapper(*args):
+        now = time.time()
+        result = func(*args)
+        print(time.time() - now)
+        return result
+    return wrapper
 
-def benchmark(f, p):
-    print(f.__name__)
-    now = time.time()
-    f(p)
-    print(time.time() - now)
 
-def f1(p):
-    print(list(map(f3, p)))
+def fetch_sync(url):
+    return requests.get(url).status_code
 
-def f2(p):
-    with Pool() as pool:
-        print(pool.map(f3, p))
+async def fetch_async(url):
+    async with aiohttp.ClientSession() as session:
+        async  with session.get(url) as response:
+            return response.status
 
-l = ["http://www.dmm.co.jp" for i in range(50)]
+@benchmark
+def process_sync(l):
+    with Pool() as p:
+        result = p.map(fetch_sync, l)
+        print(result)
 
-benchmark(f1, l)
-benchmark(f2, l)
+@benchmark
+def process_async(l):
+    loop = asyncio.get_event_loop()
+    tasks = []
+
+    for u in l:
+        tasks.append(fetch_async(u))
+
+    result = loop.run_until_complete(asyncio.gather(*tasks))
+    print(result)
+    loop.close()
+
+
+if __name__ == '__main__':
+    l = ['http://www.dmm.co.jp/mono/dvd/-/list/=/article=actress/id=1030262/sort=date/page=2/' for i in range(100)]
+
+    print('sync')
+    process_sync(l)
+
+    print('async')
+    process_async(l)
+
+
+
+
+
