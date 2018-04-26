@@ -1,15 +1,18 @@
 {
   "urls": [
-    "http://www.vpngate.net"
+    "http://151.80.182.100:10053"
   ],
   "countries": [
-    "Japan"
+    "Japan",
+    "United States",
+    "Hong Kong",
+    "Taiwan"
   ],
   "protocol": [
     "udp"
   ],
-  "session number": 0,
-  "bandwidth": 20,
+  "session number": 3,
+  "bandwidth": 10,
   "timeout": 300,
   "retry": 2,
   "save_path": "/Users/qifan/vpngate_config"

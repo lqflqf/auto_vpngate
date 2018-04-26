@@ -202,7 +202,7 @@ class HtmlParser:
     def __create_folder__(self):
         p = pathlib.Path(self.__honfig__.save_path)
         p.mkdir(exist_ok=True)
-        q = p / time.asctime().replace(':', '')
+        q = p / time.strftime('%Y%m%d %H%M%S')
         q.mkdir(exist_ok=True)
         return q
 
@@ -233,7 +233,6 @@ class HtmlParser:
         print(fn)
 
         print(time.time() - now)
-
 
 
 if __name__ == '__main__':
