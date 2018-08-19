@@ -1,8 +1,5 @@
 import json
-import requests
 from pyquery import PyQuery
-import os
-from multiprocessing import Pool
 import itertools
 import pathlib
 import time
