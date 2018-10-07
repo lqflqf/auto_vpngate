@@ -1,12 +1,18 @@
 {
   "urls": [
-    "http://151.80.182.100:10053"
+    "https://www.vpngate.net"
   ],
   "countries": [
-    "Japan",
-    "United States",
+    "Australia",
+    "Canada",
     "Hong Kong",
-    "Taiwan"
+    "Japan",
+    "Switzerland",
+    "Sweden",
+    "United Kingdom",
+    "Germany",
+    "New Zealand",
+    "United States"
   ],
   "protocol": [
     "udp"
