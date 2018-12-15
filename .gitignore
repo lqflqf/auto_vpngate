@@ -1,1 +1,12 @@
-/html/config.json
+# Created by .ignore support plugin (hsz.mobi)
+.idea/auto_vpngate.iml
+.idea/encodings.xml
+.idea/jsonSchemas.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+Database/__pycache__/
+Email/__pycache__/
+Parser/__pycache__/
+html/__pycache__/
