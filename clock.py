@@ -5,9 +5,8 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 
 sched = BlockingScheduler()
 
-
-@sched.scheduled_job('interval', minutes=10)
-def timed_job():
+@sched.scheduled_job('cron', day_of_week='mon-sun', hour='0,8,16')
+def scheduled_job():
     c = configuration.Configuration()
 
     p = async_html_parser.HtmlParser(c)
@@ -17,4 +16,5 @@ def timed_job():
     m.send_zip(p.process_async())
 
 sched.start()
+
 
