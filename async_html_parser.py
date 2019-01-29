@@ -161,7 +161,11 @@ class HtmlParser:
 
     def process_async(self):
 
-        loop = asyncio.get_event_loop()
+        # loop = asyncio.get_event_loop()
+
+        loop = asyncio.new_event_loop()
+
+        asyncio.set_event_loop(loop)
 
         tasks = [self.__url_to_html__(self.__config__.url)]
 
@@ -173,8 +177,7 @@ class HtmlParser:
 
         tasks = [self.__row_to_link__(r) for r in rows]
 
-        links = itertools.chain.from_iterable(
-            filter(lambda e: e is not None, loop.run_until_complete(asyncio.gather(*tasks))))
+        links = itertools.chain.from_iterable(filter(lambda e: e is not None, loop.run_until_complete(asyncio.gather(*tasks))))
 
         tasks = [self.__link_to_file__(l) for l in links]
 
