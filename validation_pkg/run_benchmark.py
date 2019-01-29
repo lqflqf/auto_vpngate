@@ -3,7 +3,7 @@ from multiprocessing import Pool
 import aiohttp
 import requests
 import asyncio
-import itertools
+
 
 
 def benchmark(func):

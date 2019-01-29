@@ -22,6 +22,3 @@ class Parameter(Base):
     __tablename__ = 'Parameter'
     param_id = Column(String(8), primary_key=True)
     param_value = Column(JSON())
-
-
-

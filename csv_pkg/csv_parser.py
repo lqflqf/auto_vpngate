@@ -1,4 +1,4 @@
-from Parser.Ovpn import Ovpn
+from csv_pkg.ovpn import Ovpn
 
 class CSV_parser:
     path = None
