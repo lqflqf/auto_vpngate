@@ -1,0 +1,249 @@
+AF,AFG,Afghanistan,f
+AX,ALA,Åland Islands,f
+AL,ALB,Albania,f
+DZ,DZA,Algeria,f
+AS,ASM,American Samoa,f
+AD,AND,Andorra,f
+AO,AGO,Angola,f
+AI,AIA,Anguilla,f
+AQ,ATA,Antarctica,f
+AG,ATG,Antigua and Barbuda,f
+AR,ARG,Argentina,f
+AM,ARM,Armenia,f
+AW,ABW,Aruba,f
+AU,AUS,Australia,f
+AT,AUT,Austria,f
+AZ,AZE,Azerbaijan,f
+BS,BHS,Bahamas (the),f
+BH,BHR,Bahrain,f
+BD,BGD,Bangladesh,f
+BB,BRB,Barbados,f
+BY,BLR,Belarus,f
+BE,BEL,Belgium,f
+BZ,BLZ,Belize,f
+BJ,BEN,Benin,f
+BM,BMU,Bermuda,f
+BT,BTN,Bhutan,f
+BO,BOL,Bolivia (Plurinational State of),f
+BQ,BES,"Bonaire, Sint Eustatius and Saba",f
+BA,BIH,Bosnia and Herzegovina,f
+BW,BWA,Botswana,f
+BV,BVT,Bouvet Island,f
+BR,BRA,Brazil,f
+IO,IOT,British Indian Ocean Territory (the),f
+BN,BRN,Brunei Darussalam,f
+BG,BGR,Bulgaria,f
+BF,BFA,Burkina Faso,f
+BI,BDI,Burundi,f
+CV,CPV,Cabo Verde,f
+KH,KHM,Cambodia,f
+CM,CMR,Cameroon,f
+CA,CAN,Canada,t
+KY,CYM,Cayman Islands (the),f
+CF,CAF,Central African Republic (the),f
+TD,TCD,Chad,f
+CL,CHL,Chile,f
+CN,CHN,China,f
+CX,CXR,Christmas Island,f
+CC,CCK,Cocos (Keeling) Islands (the),f
+CO,COL,Colombia,f
+KM,COM,Comoros (the),f
+CD,COD,Congo (the Democratic Republic of the),f
+CG,COG,Congo (the),f
+CK,COK,Cook Islands (the),f
+CR,CRI,Costa Rica,f
+CI,CIV,Côte d'Ivoire,f
+HR,HRV,Croatia,f
+CU,CUB,Cuba,f
+CW,CUW,Curaçao,f
+CY,CYP,Cyprus,f
+DJ,DJI,Djibouti,f
+DM,DMA,Dominica,f
+DO,DOM,Dominican Republic (the),f
+EC,ECU,Ecuador,f
+EG,EGY,Egypt,f
+SV,SLV,El Salvador,f
+GQ,GNQ,Equatorial Guinea,f
+ER,ERI,Eritrea,f
+EE,EST,Estonia,f
+SZ,SWZ,Eswatini,f
+ET,ETH,Ethiopia,f
+FK,FLK,Falkland Islands (the) [Malvinas],f
+FO,FRO,Faroe Islands (the),f
+FJ,FJI,Fiji,f
+GF,GUF,French Guiana,f
+PF,PYF,French Polynesia,f
+TF,ATF,French Southern Territories (the),f
+GA,GAB,Gabon,f
+GM,GMB,Gambia (the),f
+GE,GEO,Georgia,f
+GH,GHA,Ghana,f
+GI,GIB,Gibraltar,f
+GR,GRC,Greece,f
+GL,GRL,Greenland,f
+GD,GRD,Grenada,f
+GP,GLP,Guadeloupe,f
+GU,GUM,Guam,f
+GT,GTM,Guatemala,f
+GG,GGY,Guernsey,f
+GN,GIN,Guinea,f
+GW,GNB,Guinea-Bissau,f
+GY,GUY,Guyana,f
+HT,HTI,Haiti,f
+HM,HMD,Heard Island and McDonald Islands,f
+VA,VAT,Holy See (the),f
+HN,HND,Honduras,f
+HK,HKG,Hong Kong,f
+HU,HUN,Hungary,f
+IN,IND,India,f
+ID,IDN,Indonesia,f
+IR,IRN,Iran (Islamic Republic of),f
+IQ,IRQ,Iraq,f
+IM,IMN,Isle of Man,f
+IL,ISR,Israel,f
+JM,JAM,Jamaica,f
+JP,JPN,Japan,t
+JE,JEY,Jersey,f
+JO,JOR,Jordan,f
+KZ,KAZ,Kazakhstan,f
+KE,KEN,Kenya,f
+KI,KIR,Kiribati,f
+KP,PRK,Korea (the Democratic People's Republic of),f
+KR,KOR,Korea (the Republic of),f
+KW,KWT,Kuwait,f
+KG,KGZ,Kyrgyzstan,f
+LA,LAO,Lao People's Democratic Republic (the),f
+LV,LVA,Latvia,f
+LB,LBN,Lebanon,f
+LS,LSO,Lesotho,f
+LR,LBR,Liberia,f
+LY,LBY,Libya,f
+LI,LIE,Liechtenstein,f
+LT,LTU,Lithuania,f
+LU,LUX,Luxembourg,t
+MO,MAC,Macao,f
+MK,MKD,Macedonia (the former Yugoslav Republic of),f
+MG,MDG,Madagascar,f
+MW,MWI,Malawi,f
+MY,MYS,Malaysia,f
+MV,MDV,Maldives,f
+ML,MLI,Mali,f
+MT,MLT,Malta,f
+MH,MHL,Marshall Islands (the),f
+MQ,MTQ,Martinique,f
+MR,MRT,Mauritania,f
+MU,MUS,Mauritius,f
+YT,MYT,Mayotte,f
+MX,MEX,Mexico,f
+FM,FSM,Micronesia (Federated States of),f
+MD,MDA,Moldova (the Republic of),f
+MC,MCO,Monaco,f
+MN,MNG,Mongolia,f
+ME,MNE,Montenegro,f
+MS,MSR,Montserrat,f
+MA,MAR,Morocco,f
+MZ,MOZ,Mozambique,f
+MM,MMR,Myanmar,f
+NA,NAM,Namibia,f
+NR,NRU,Nauru,f
+NP,NPL,Nepal,f
+NC,NCL,New Caledonia,f
+NI,NIC,Nicaragua,f
+NE,NER,Niger (the),f
+NG,NGA,Nigeria,f
+NU,NIU,Niue,f
+NF,NFK,Norfolk Island,f
+MP,MNP,Northern Mariana Islands (the),f
+OM,OMN,Oman,f
+PK,PAK,Pakistan,f
+PW,PLW,Palau,f
+PS,PSE,"Palestine, State of",f
+PA,PAN,Panama,f
+PG,PNG,Papua New Guinea,f
+PY,PRY,Paraguay,f
+PE,PER,Peru,f
+PH,PHL,Philippines (the),f
+PN,PCN,Pitcairn,f
+PL,POL,Poland,f
+PR,PRI,Puerto Rico,f
+QA,QAT,Qatar,f
+RE,REU,Réunion,f
+RO,ROU,Romania,f
+RU,RUS,Russian Federation (the),f
+RW,RWA,Rwanda,f
+BL,BLM,Saint Barthélemy,f
+SH,SHN,"Saint Helena, Ascension and Tristan da Cunha",f
+KN,KNA,Saint Kitts and Nevis,f
+LC,LCA,Saint Lucia,f
+MF,MAF,Saint Martin (French part),f
+PM,SPM,Saint Pierre and Miquelon,f
+VC,VCT,Saint Vincent and the Grenadines,f
+WS,WSM,Samoa,f
+SM,SMR,San Marino,f
+ST,STP,Sao Tome and Principe,f
+SA,SAU,Saudi Arabia,f
+SN,SEN,Senegal,f
+RS,SRB,Serbia,f
+SC,SYC,Seychelles,f
+SL,SLE,Sierra Leone,f
+SG,SGP,Singapore,f
+SX,SXM,Sint Maarten (Dutch part),f
+SK,SVK,Slovakia,f
+SB,SLB,Solomon Islands,f
+SO,SOM,Somalia,f
+ZA,ZAF,South Africa,f
+GS,SGS,South Georgia and the South Sandwich Islands,f
+SS,SSD,South Sudan,f
+LK,LKA,Sri Lanka,f
+SD,SDN,Sudan (the),f
+SR,SUR,Suriname,f
+SJ,SJM,Svalbard and Jan Mayen,f
+SY,SYR,Syrian Arab Republic,f
+TW,TWN,Taiwan (Province of China),f
+TJ,TJK,Tajikistan,f
+TZ,TZA,"Tanzania, United Republic of",f
+TH,THA,Thailand,f
+TL,TLS,Timor-Leste,f
+TG,TGO,Togo,f
+TK,TKL,Tokelau,f
+TO,TON,Tonga,f
+TT,TTO,Trinidad and Tobago,f
+TN,TUN,Tunisia,f
+TR,TUR,Turkey,f
+TM,TKM,Turkmenistan,f
+TC,TCA,Turks and Caicos Islands (the),f
+TV,TUV,Tuvalu,f
+UG,UGA,Uganda,f
+UA,UKR,Ukraine,f
+AE,ARE,United Arab Emirates (the),f
+GB,GBR,United Kingdom of Great Britain and Northern Ireland (the),f
+UM,UMI,United States Minor Outlying Islands (the),f
+US,USA,United States of America (the),t
+UZ,UZB,Uzbekistan,f
+VU,VUT,Vanuatu,f
+VE,VEN,Venezuela (Bolivarian Republic of),f
+VN,VNM,Viet Nam,f
+VG,VGB,Virgin Islands (British),f
+VI,VIR,Virgin Islands (U.S.),f
+WF,WLF,Wallis and Futuna,f
+EH,ESH,Western Sahara*,f
+YE,YEM,Yemen,f
+ZM,ZMB,Zambia,f
+ZW,ZWE,Zimbabwe,f
+CZ,CZE,Czechia,t
+DK,DNK,Denmark,t
+FI,FIN,Finland,t
+FR,FRA,France,t
+DE,DEU,Germany,t
+IS,ISL,Iceland,t
+IE,IRL,Ireland,t
+IT,ITA,Italy,t
+NL,NLD,Netherlands (the),t
+NZ,NZL,New Zealand,t
+NO,NOR,Norway,t
+PT,PRT,Portugal,t
+SI,SVN,Slovenia,t
+ES,ESP,Spain,t
+SE,SWE,Sweden,t
+CH,CHE,Switzerland,t
+UY,URY,Uruguay,t
