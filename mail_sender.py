@@ -4,7 +4,7 @@ import datetime
 import email.mime.application
 import email.mime.multipart
 import smtplib
-from . import configuration
+import configuration
 
 class MailSender:
     def __init__(self, config):
