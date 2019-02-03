@@ -1,6 +1,6 @@
 import configuration
 import async_html_parser
-import mail_sender
+from . import mail_sender
 
 
 if __name__ == '__main__':

@@ -1,11 +1,10 @@
-import configuration
 import io
 import zipfile
 import datetime
 import email.mime.application
 import email.mime.multipart
 import smtplib
-
+from . import configuration
 
 class MailSender:
     def __init__(self, config):
