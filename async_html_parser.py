@@ -2,7 +2,7 @@ import pyquery
 import itertools
 import asyncio
 import aiohttp
-import configuration
+from . import configuration
 
 
 class VgRow:

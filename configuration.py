@@ -2,7 +2,7 @@ import json
 import os
 import sqlalchemy
 import sqlalchemy.orm
-from db_model import *
+from .db_model import *
 
 
 class Configuration:
