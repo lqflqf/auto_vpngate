@@ -1,7 +1,7 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
-from . import configuration
-from . import mail_sender
-from . import async_html_parser
+import configuration
+import mail_sender
+import async_html_parser
 
 sched = BlockingScheduler()
 
