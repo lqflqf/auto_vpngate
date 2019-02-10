@@ -43,7 +43,7 @@ def process_async(l):
 
 
 if __name__ == '__main__':
-    l = ['http://www.dmm.co.jp/mono/dvd/-/list/=/article=actress/id=1030262/sort=date/page=2/' for i in range(100)]
+    l = ['https://blog.jetbrains.com' for i in range(100)]
 
     print('sync')
     process_sync(l)
