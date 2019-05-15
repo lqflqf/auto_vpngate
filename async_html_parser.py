@@ -149,7 +149,8 @@ class HtmlParser:
 
     async def __html_to_row_list__(self, url, html):
         # tabrow = pyquery.PyQuery(html).find(self.__tab_id__).eq(2).find('tr')
-        tabrow = pyquery.PyQuery(html)('table').filter('.vg_hosts_table_id').find('tr')
+        pq = pyquery.PyQuery(html)
+        tabrow = pq('table').filter('.vg_hosts_table_id').find('tr')
         print(tabrow.html())
         return [VgRow(url, r) for r in tabrow.items() if \
                 r.children().hasClass(self.__tab_data_cls0__) \
