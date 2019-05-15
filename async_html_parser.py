@@ -148,6 +148,7 @@ class HtmlParser:
         return url, await self.post(url + self.__lang__, form_data)
 
     async def __html_to_row_list__(self, url, html):
+        print(html)
         tabrow = pyquery.PyQuery(html).find(self.__tab_id__).eq(2).find('tr')
         return [VgRow(url, r) for r in tabrow.items() if \
                 r.children().hasClass(self.__tab_data_cls0__) \
