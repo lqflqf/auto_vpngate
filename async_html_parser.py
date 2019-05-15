@@ -84,17 +84,19 @@ class HtmlParser:
     __tab_data_cls0__ = 'vg_table_row_0'
     __tab_data_cls1__ = 'vg_table_row_1'
     __tab_header_cls__ = 'vg_table_header'
-    __form_data__ = {
-        "__VIEWSTATE": "wEPDwULLTE1ODQzMDg1NDMPZBYCAgEPZBYKZg8PFgIeBFRleHQF1QFZb3VyIElQOiBzb2Z0YmFuazEyNjA1NzIyMjE0MC5iYnRlYy5uZXQgKDEyNi41Ny4yMjIuMTQwKTxCUj48aW1nIHNyYz0nLi4vaW1hZ2VzL2ZsYWdzL0pQLnBuZycgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyAvPjxCUj5Zb3VyIGNvdW50cnk6IEphcGFuPEJSPjxhIGhyZWY9JyNMSVNUJz5MZXQncyBjaGFuZ2UgeW91ciBJUCBhZGRyZXNzIGJ5IHVzaW5nIFZQTiBHYXRlITwvYT5kZAIBDw8WAh8ABWM8Yj5Ub2RheTogNCwxMjAsODg0IGNvbm5lY3Rpb25zLCBDdW11bGF0aXZlOiA1LDUxNiwwOTAsMTEyIGNvbm5lY3Rpb25zLCBUcmFmZmljOiAxNjcsODgwLjUzIFRCLjwvYj5kZAIDDw8WAh8ABQUyLDk3NWRkAgQPDxYCHwAFODxiPjUsNTE2LDA5MCwxMTIgVlBOIGNvbm5lY3Rpb25zIGZyb20gMjM0IENvdW50cmllcy48L2I",
-        "__VIEWSTATEGENERATOR": "1A8A0CA9",
-        "__EVENTVALIDATION": "/wEdAAeSJ4zco66jEJfXkVLyEXnWZSmLidaMQ3gg2jFmkkuEoSCbR2H52ATFMg5mk6aQHX3LISMg9/mywZPt3Ki4B"
-                             "VA7RhcLWIOHmHJ6h2VtXvwLieWw6g9beu/2J/0raZOGI2E/WMskeKo19Gyidl+m11dTQ4jHStBhHAmWMfq++a085m"
-                             "llmWeyjqtOosslKzVL2wQ=",
-        "C_OpenVPN": "on"
-    }
+
+    # __form_data__ = {
+    #     "__VIEWSTATE": "wEPDwULLTE1ODQzMDg1NDMPZBYCAgEPZBYKZg8PFgIeBFRleHQF1QFZb3VyIElQOiBzb2Z0YmFuazEyNjA1NzIyMjE0MC5iYnRlYy5uZXQgKDEyNi41Ny4yMjIuMTQwKTxCUj48aW1nIHNyYz0nLi4vaW1hZ2VzL2ZsYWdzL0pQLnBuZycgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyAvPjxCUj5Zb3VyIGNvdW50cnk6IEphcGFuPEJSPjxhIGhyZWY9JyNMSVNUJz5MZXQncyBjaGFuZ2UgeW91ciBJUCBhZGRyZXNzIGJ5IHVzaW5nIFZQTiBHYXRlITwvYT5kZAIBDw8WAh8ABWM8Yj5Ub2RheTogNCwxMjAsODg0IGNvbm5lY3Rpb25zLCBDdW11bGF0aXZlOiA1LDUxNiwwOTAsMTEyIGNvbm5lY3Rpb25zLCBUcmFmZmljOiAxNjcsODgwLjUzIFRCLjwvYj5kZAIDDw8WAh8ABQUyLDk3NWRkAgQPDxYCHwAFODxiPjUsNTE2LDA5MCwxMTIgVlBOIGNvbm5lY3Rpb25zIGZyb20gMjM0IENvdW50cmllcy48L2I",
+    #     "__VIEWSTATEGENERATOR": "1A8A0CA9",
+    #     "__EVENTVALIDATION": "/wEdAAeSJ4zco66jEJfXkVLyEXnWZSmLidaMQ3gg2jFmkkuEoSCbR2H52ATFMg5mk6aQHX3LISMg9/mywZPt3Ki4B"
+    #                          "VA7RhcLWIOHmHJ6h2VtXvwLieWw6g9beu/2J/0raZOGI2E/WMskeKo19Gyidl+m11dTQ4jHStBhHAmWMfq++a085m"
+    #                          "llmWeyjqtOosslKzVL2wQ=",
+    #     "C_OpenVPN": "on"
+    # }
 
     def __init__(self, config):
         self.__config__: configuration.Configuration = config
+
 
         # self.__path_obj__ = self.__create_folder__()
 
@@ -135,7 +137,15 @@ class HtmlParser:
         return True if e is not None else False
 
     async def __url_to_html__(self, url):
-        return url, await self.post(url + self.__lang__, self.__form_data__)
+        html = await self.get(url + self.__lang__)
+        pq = pyquery.PyQuery(html)
+
+        v1 = pq('input').filter('.__VIEWSTATE').attr('value')
+        v2 = pq('input').filter('.__VIEWSTATEGENERATOR').attr('value')
+        v3 = pq('input').filter('.__EVENTVALIDATION').attr('value')
+
+        form_data = {'__VIEWSTATE':v1, '__VIEWSTATEGENERATOR': v2, '__EVENTVALIDATION': v3}
+        return url, await self.post(url + self.__lang__, form_data)
 
     async def __html_to_row_list__(self, url, html):
         tabrow = pyquery.PyQuery(html).find(self.__tab_id__).eq(2).find('tr')
