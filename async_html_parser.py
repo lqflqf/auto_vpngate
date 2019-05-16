@@ -17,7 +17,7 @@ class VgRow:
         self.bandwidth = self.__to_float__(pq_obj.children().eq(3).text().split(self.__nl__)[0].split()[0])
         self.ping = self.__to_int__(pq_obj.children().eq(3).text().split(self.__nl__)[1].split()[1])
 
-        href_list = pq_obj.children().eq(6).find('a').attr('href').split('?')[1].split('&')
+        href_list = pq_obj.children().eq(6)('a').attr('href').split('?')[1].split('&')
 
         self.ip = href_list[1].split(self.__eq_sign__)[1]
         self.tcp = href_list[2].split(self.__eq_sign__)[1]
@@ -139,7 +139,7 @@ class HtmlParser:
         return url, await self.post(url + self.__lang__, form_data)
 
     async def __html_to_row_list__(self, url, html):
-        tabrow = pyquery.PyQuery(html)(self.__tab_id__).eq(2).find('tr')
+        tabrow = pyquery.PyQuery(html)(self.__tab_id__).eq(2)('tr')
         return [VgRow(url, r) for r in tabrow.items() if \
                 r.children().hasClass(self.__tab_data_cls0__) \
                 or r.children().hasClass(self.__tab_data_cls1__)]
