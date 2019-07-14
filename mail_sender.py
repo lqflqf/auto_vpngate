@@ -3,7 +3,7 @@ import zipfile
 import datetime
 import email.mime.application
 import email.mime.multipart
-from email.message import EmailMessage
+import email.message
 import smtplib
 import configuration
 
@@ -25,13 +25,17 @@ class MailSender:
 
         time_stamp = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).strftime('%Y%m%d %H%M%S')
 
-        msg = EmailMessage()
+        msg = email.message.EmailMessage()
         msg['Subject'] = 'VPN Gate ' + time_stamp
         msg['From'] = self.__config__.smtp_user
         msg['Bcc'] = ','.join(self.__config__.mail)
         msg.set_content(mail_body)
-        
-        msg.add_attachment(file.getvalue(), 'application', 'zip', 'ovpn ' + time_stamp +'.zip')
+
+        mime = email.message.MIMEPart()
+        mime.set_content(file.getvalue())
+        mime.add_header('Content-Disposition', 'attachment', filename='ovpn ' + time_stamp +'.zip')
+
+        msg.add_attachment(mime)
 
         client = smtplib.SMTP_SSL(self.__config__.smtp_server)
         client.login(smtp_user, self.__config__.smtp_pwd)
