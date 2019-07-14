@@ -158,7 +158,7 @@ class HtmlParser:
         return vglink.filename, file
 
     async def __get_l2tp_list__(self, url):
-        html = await self.__url_to_html__(url, mode='l2tp')
+        html = await self.__url_to_html__(url, mode='l2tp')[1]
         tabrow = pyquery.PyQuery(html)(self.__tab_id__).eq(2)('tr')
         tablist = [r for r in tabrow.items() if \
                 r.children().hasClass(self.__tab_data_cls0__) \
@@ -208,7 +208,6 @@ class HtmlParser:
 
         mail_text = loop.run_until_complete(asyncio.gather(*tasks))[0]
 
-
         loop.close()
 
-        return (list(filter(lambda i: i[1] is not None, files)), mail_text)
+        return list(filter(lambda i: i[1] is not None, files)), mail_text
