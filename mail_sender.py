@@ -30,9 +30,9 @@ class MailSender:
         msg['From'] = self.__config__.smtp_user
         msg['Bcc'] = ','.join(self.__config__.mail)
         msg.set_content(mail_body)
-        att = email.mime.application.MIMEApplication(file.getvalue())
-        att.add_header('Content-Disposition', 'attachment', filename='ovpn ' + time_stamp + '.zip')
-        msg.attach(att)
+        # att = email.mime.application.MIMEApplication(file.getvalue())
+        # att.add_header('Content-Disposition', 'attachment', filename='ovpn ' + time_stamp + '.zip')
+        # msg.attach(att)
 
         client = smtplib.SMTP_SSL(self.__config__.smtp_server)
         client.login(smtp_user, self.__config__.smtp_pwd)
