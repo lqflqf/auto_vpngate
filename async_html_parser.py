@@ -208,8 +208,6 @@ class HtmlParser:
 
         mail_text = loop.run_until_complete(asyncio.gather(*tasks))
 
-        print(mail_text)
-
         loop.close()
 
         return list(filter(lambda i: i[1] is not None, files)), mail_text[0]
