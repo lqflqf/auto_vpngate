@@ -88,7 +88,6 @@ class HtmlParser:
     def __init__(self, config):
         self.__config__: configuration.Configuration = config
 
-
         # self.__path_obj__ = self.__create_folder__()
 
     async def get(self, url, params=None):
@@ -127,7 +126,7 @@ class HtmlParser:
     def __is_not_none__(e):
         return True if e is not None else False
 
-    async def __url_to_html__(self, url):
+    async def __url_to_html__(self, url, mode='openvpn'):
         html = await self.get(url + self.__lang__)
         pq = pyquery.PyQuery(html)
 
@@ -135,7 +134,13 @@ class HtmlParser:
         v2 = pq('input#__VIEWSTATEGENERATOR').attr('value')
         v3 = pq('input#__EVENTVALIDATION').attr('value')
 
-        form_data = {'__VIEWSTATE': v1, '__VIEWSTATEGENERATOR': v2, '__EVENTVALIDATION': v3, 'C_OpenVPN': 'on'}
+        form_data = {'__VIEWSTATE': v1, '__VIEWSTATEGENERATOR': v2, '__EVENTVALIDATION': v3}
+
+        if mode == 'l2tp':
+            form_data['C_L2TP'] = 'on'
+        else:
+            form_data['C_OpenVPN'] = 'on'
+
         return url, await self.post(url + self.__lang__, form_data)
 
     async def __html_to_row_list__(self, url, html):
@@ -151,6 +156,28 @@ class HtmlParser:
     async def __link_to_file__(self, vglink: VgLink):
         file = await self.get(vglink.url, vglink.params)
         return vglink.filename, file
+
+    async def __get_l2tp_list__(self, url):
+        html = await self.__url_to_html__(url, mode='l2tp')
+        tabrow = pyquery.PyQuery(html)(self.__tab_id__).eq(2)('tr')
+        tablist = [r for r in tabrow.items() if \
+                r.children().hasClass(self.__tab_data_cls0__) \
+                or r.children().hasClass(self.__tab_data_cls1__)]
+
+        l2tp_list = []
+
+        for i in tablist:
+            c = i.children()
+            country = c.eq(0).text()
+            ip = c.eq(1).text().split('\n')[1]
+            l2tp_list.append((country, ip))
+
+        rep = ''
+        for l in l2tp_list:
+            rep = rep + l[0] + ' ' * 3 + l[1] + '\n'
+
+        return rep
+
 
     def process_async(self):
 
@@ -176,6 +203,12 @@ class HtmlParser:
 
         files = loop.run_until_complete(asyncio.gather(*tasks))
 
+        #get l2tp list
+        tasks = [self.__get_l2tp_list__(self.__config__.url)]
+
+        mail_text = loop.run_until_complete(asyncio.gather(*tasks))
+
+
         loop.close()
 
-        return list(filter(lambda i: i[1] is not None, files))
+        return (list(filter(lambda i: i[1] is not None, files)), mail_text)

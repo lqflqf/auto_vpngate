@@ -19,7 +19,7 @@ class MailSender:
             zip_file.close()
         return buffer
 
-    def __send_mail__(self, file: io.BytesIO):
+    def __send_mail__(self, file: io.BytesIO, mail_body):
         smtp_user = self.__config__.smtp_user.split('@')[0]
 
         time_stamp = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).strftime('%Y%m%d %H%M%S')
@@ -28,6 +28,7 @@ class MailSender:
         msg['Subject'] = 'VPN Gate ' + time_stamp
         msg['From'] = self.__config__.smtp_user
         msg['Bcc'] = ','.join(self.__config__.mail)
+        msg.preamble = mail_body
 
         att = email.mime.application.MIMEApplication(file.getvalue())
         # file.close()
@@ -39,5 +40,6 @@ class MailSender:
         client.send_message(msg)
         client.quit()
 
-    def send_zip(self, files):
-        self.__send_mail__(self.__zip__(files))
+    def send_zip(self, content):
+        zipped = self.__zip__(content[0])
+        self.__send_mail__(zipped, content[1])
