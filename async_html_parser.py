@@ -206,8 +206,10 @@ class HtmlParser:
         #get l2tp list
         tasks = [self.__get_l2tp_list__(self.__config__.url)]
 
-        mail_text = loop.run_until_complete(asyncio.gather(*tasks))[0]
+        mail_text = loop.run_until_complete(asyncio.gather(*tasks))
+
+        print(mail_text)
 
         loop.close()
 
-        return list(filter(lambda i: i[1] is not None, files)), mail_text
+        return list(filter(lambda i: i[1] is not None, files)), mail_text[0]
