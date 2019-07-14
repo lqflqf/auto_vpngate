@@ -158,8 +158,8 @@ class HtmlParser:
         return vglink.filename, file
 
     async def __get_l2tp_list__(self, url):
-        html = await self.__url_to_html__(url, mode='l2tp')[1]
-        tabrow = pyquery.PyQuery(html)(self.__tab_id__).eq(2)('tr')
+        html_tuple = await self.__url_to_html__(url, mode='l2tp')
+        tabrow = pyquery.PyQuery(html_tuple[1])(self.__tab_id__).eq(2)('tr')
         tablist = [r for r in tabrow.items() if \
                 r.children().hasClass(self.__tab_data_cls0__) \
                 or r.children().hasClass(self.__tab_data_cls1__)]
