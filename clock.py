@@ -7,7 +7,7 @@ import async_html_parser
 sched = BlockingScheduler()
 
 
-@sched.scheduled_job('cron', day_of_week='mon-sun', hour='0,12')
+@sched.scheduled_job('cron', day_of_week='mon-sun', hour='9,21')
 def scheduled_job():
     c = configuration.Configuration()
 
