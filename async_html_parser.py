@@ -16,6 +16,7 @@ class VgRow:
         self.alive_days = self.__to_int__(pq_obj.children().eq(2).text().split(self.__nl__)[1].split()[0])
         self.bandwidth = self.__to_float__(pq_obj.children().eq(3).text().split(self.__nl__)[0].split()[0])
         self.ping = self.__to_int__(pq_obj.children().eq(3).text().split(self.__nl__)[1].split()[1])
+        self.score = pq_obj.children().eq(9).text().replace(',', '')
 
         href_list = pq_obj.children().eq(6)('a').attr('href').split('?')[1].split('&')
 
@@ -73,7 +74,7 @@ class VgLink:
             self.params['port'] = self.vgrow.udp
 
         self.filename = self.vgrow.country + '_' + self.vgrow.ip + '_' + self.protocol + '_' + \
-                        self.params['port'] + '.ovpn'
+                        self.params['port'] + '_' + self.vgrow.score + '.ovpn'
 
         self.url = self.vgrow.url + self.__location__
 

@@ -8,8 +8,8 @@ if __name__ == '__main__':
 
     c = configuration.Configuration()
 
-    if sys.argv != ['']:
-        c.mail = sys.argv
+    if len(sys.argv) > 1:
+        c.mail = sys.argv[1:]
 
     p = async_html_parser.HtmlParser(c)
 
