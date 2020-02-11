@@ -5,7 +5,7 @@ async-timeout==3.0.1
 attrs==19.3.0
 cchardet==2.1.5
 certifi==2019.11.28
-cffi==1.13.2
+cffi==1.14.0
 chardet==3.0.4
 cssselect==1.1.0
 idna==2.8
@@ -31,4 +31,4 @@ tzlocal==2.0.0
 urllib3==1.25.8
 wcwidth==0.1.8
 yarl==1.4.2
-zipp==2.1.0
+zipp==2.2.0
