@@ -10,7 +10,7 @@ class Configuration:
     country = []
 
     def __init__(self):
-        self.__db_url__ = os.environ['DATABASE_URL']
+        self.__db_url__ = os.environ['DB_URL']
         self.__engine__ = create_engine(self.__db_url__)
         session = sqlalchemy.orm.Session(self.__engine__)
 
