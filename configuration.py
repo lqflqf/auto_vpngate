@@ -10,7 +10,7 @@ class Configuration:
     country = []
 
     def __init__(self):
-        self.__db_url__ = os.environ['DATABASE_URL']
+        self.__db_url__ = os.environ['DATABASE_URL'].replace("postgres", "postgresql+psycopg2")
         self.__engine__ = create_engine(self.__db_url__)
         session = sqlalchemy.orm.Session(self.__engine__)
 
@@ -20,6 +20,7 @@ class Configuration:
 
         self.__config__ = json.loads(session.query(Parameter.param_value).filter(Parameter.param_id == 'PARAM_1').one()[0])
 
+        session.close()
     @property
     def url(self):
         return self.__config__['url']
