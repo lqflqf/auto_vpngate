@@ -1,10 +1,16 @@
-dist: xenial   # required for Python >= 3.7
+dist: xenial
 language: python
 python:
-  - "3.9"
-# command to install dependencies
+- '3.9'
 install:
-  - pip install -r requirements.txt
-# command to run tests
+- pip install -r requirements.txt
 script:
-  - pytest
+- pytest
+deploy:
+  provider: heroku
+  api_key:
+    secure: IvP16yJZ7UhWLzXeOdAyaIjkaIELmVj3QYtMZtoPEpRnbGnWekCN43thdXEWIwgC6Pj0zsgYOonQ5ATHSTipwvOOKMjbcRGCdB/TxSRSJwuXXY39RozPv+u67oSupGyTvrkcHHWUL3ySNTD5X8Ts0ex9lST3cbBcN/wU/pG5+H/jmO4++giFTjBdes+ZM/3Okha+Ng0bkj0kAnM4UwztlPbF4cD238PnsEJl9l0KVdTnAFpFJo1mQUuXpRM82288FW50wKzsAEsHJw/uulI5RvLan9MGzMietVfiOAa3bOHVQO3i0xXJ8xdoAkvCWhcmRa3R2WswNdyXBSmMd8y+bgo4zrTlrDA43e39Nj+3yR31ekblRgiGpRivLMJ0jwH6/J/EzOesO26IKxIdXcRbGZ/VMy7Ks8VYA7QtqAThRc73Hl7TQoo1VCz8KAntoR1+w0mYAQ9NK0mPEBGQeRMaTEnM3CoNHiqCSoMU/8fdiBLzgJE87jVljWH3vzxltTp4mUv4WdY4PdmmsBplewv7r41kpARNduyqtj3h2vFI2g6Sk5KwbbhOYtG1Q3FTPSXnLgspF53ynM+InTe1Ht/ZVcHE4cIsnj4YKXDeULiJ77ChmvxaiZS/AQwlZUTXdi+4PciJw6+I0zdn0bVoeDr7PAoJ3+8/C3ZqKQEsIMgg7Bg=
+  app: auto_vpngate
+  on:
+    repo: lqflqf/auto_vpngate
+  skip_cleanup: 'true'
