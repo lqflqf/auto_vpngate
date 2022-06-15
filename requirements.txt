@@ -5,15 +5,14 @@ apscheduler==3.9.1
 async-timeout==4.0.2; python_version >= '3.6'
 attrs==21.4.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
 cchardet==2.1.7
-certifi==2021.10.8
+certifi==2022.5.18.1; python_version >= '3.6'
 cffi==1.15.0
-charset-normalizer==2.0.12; python_full_version >= '3.5.0'
+charset-normalizer==2.0.12; python_version >= '3.5'
 cssselect==1.1.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 frozenlist==1.3.0; python_version >= '3.7'
-greenlet==1.1.2; python_version >= '3' and platform_machine == 'aarch64' or (platform_machine == 'ppc64le' or (platform_machine == 'x86_64' or (platform_machine == 'amd64' or (platform_machine == 'AMD64' or (platform_machine == 'win32' or platform_machine == 'WIN32')))))
-idna==3.3; python_version >= '3'
+idna==3.3; python_version >= '3.5'
 iniconfig==1.1.1
-lxml==4.8.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
+lxml==4.9.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
 multidict==6.0.2; python_version >= '3.7'
 packaging==21.3; python_version >= '3.6'
 pluggy==1.0.0; python_version >= '3.6'
@@ -21,16 +20,16 @@ psycopg2-binary==2.9.3
 py==1.11.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
 pycares==4.1.2
 pycparser==2.21; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
-pyparsing==3.0.8; python_full_version >= '3.6.8'
+pyparsing==3.0.9; python_full_version >= '3.6.8'
 pyquery==1.4.3
 pytest-asyncio==0.18.3
 pytest==7.1.2; python_version >= '3.7'
 pytz-deprecation-shim==0.1.0.post0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5'
 pytz==2022.1
-requests==2.27.1
-setuptools==62.1.0; python_version >= '3.7'
+requests==2.28.0
+setuptools==62.4.0; python_version >= '3.7'
 six==1.16.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
-sqlalchemy==1.4.36
+sqlalchemy==1.4.37
 tomli==2.0.1; python_version >= '3.7'
 tzdata==2022.1; python_version >= '3.6'
 tzlocal==4.2; python_version >= '3.6'
