@@ -37,3 +37,7 @@ def test_hour(config_obj):
 
 def test_timezone(config_obj):
     assert config_obj.timezone is not None
+
+
+def access_key(config_obj):
+    assert len(config_obj.access_key) >= 16

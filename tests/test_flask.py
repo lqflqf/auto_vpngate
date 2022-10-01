@@ -8,5 +8,15 @@ def test_index():
     assert r.status_code == 200
 
 
-def test_job():
-    assert len(main.b_scheduler.get_jobs()) > 0
+def process_1():
+    main.app.testing = True
+    client = main.app.test_client()
+    r = client.get('/process')
+    assert r.status_code == 401
+
+
+def process_2():
+    main.app.testing = True
+    client = main.app.test_client()
+    r = client.get('/process?access_key=1234abcd')
+    assert r.status_code == 401

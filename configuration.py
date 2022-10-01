@@ -68,3 +68,7 @@ class Configuration:
     @property
     def timezone(self):
         return self.__config__['timezone']
+
+    @property
+    def access_key(self):
+        return self.__config__['access_key']

@@ -2,10 +2,9 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import configuration
 import mail_sender
 import async_html_parser
-from flask import Flask
+from flask import Flask, request, abort
 
-config = configuration.Configuration()
-b_scheduler = BackgroundScheduler(timezone=config.timezone)
+config_obj = configuration.Configuration()
 
 
 def run_job():
@@ -17,11 +16,6 @@ def run_job():
     print("job done")
 
 
-b_scheduler.add_job(func=run_job, trigger=config.trigger, day_of_week=config.day_of_week, hour=config.hour)
-# b_scheduler.add_job(func=run_job, trigger="interval", minutes=5)
-
-b_scheduler.start()
-
 app = Flask(__name__)
 
 
@@ -29,6 +23,16 @@ app = Flask(__name__)
 def hello():
     """Return a friendly HTTP greeting."""
     return 'Hello World!'
+
+
+@app.route('/process')
+def process():
+    access_key = request.args['access_key']
+    if access_key == config_obj.access_key:
+        run_job()
+        return 'Job Done'
+    else:
+        abort(401)
 
 
 if __name__ == '__main__':
