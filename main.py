@@ -1,4 +1,3 @@
-from apscheduler.schedulers.background import BackgroundScheduler
 import configuration
 import mail_sender
 import async_html_parser
