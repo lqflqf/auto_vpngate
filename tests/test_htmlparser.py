@@ -4,7 +4,6 @@ import configuration
 import pyquery
 
 
-
 @pytest.fixture
 def parser():
     return async_html_parser.HtmlParser(configuration.Configuration())
@@ -12,7 +11,6 @@ def parser():
 
 @pytest.mark.asyncio
 async def test_openvpn(parser):
-
     url, html = await parser.__url_to_html__(parser.__config__.url)
     assert url == parser.__config__.url
     pq = pyquery.PyQuery(html)
@@ -31,3 +29,4 @@ async def test_l2tp(parser):
 def test_process(parser):
     files = parser.process_async()[0]
     assert len(files) > 0
+    assert files[0][1].find('data-ciphers') > 0
