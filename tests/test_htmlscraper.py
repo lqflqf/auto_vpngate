@@ -1,12 +1,12 @@
 import pytest
-import async_html_parser
+import async_html_scraper
 import configuration
 import pyquery
 
 
 @pytest.fixture
 def parser():
-    return async_html_parser.HtmlParser(configuration.Configuration())
+    return async_html_scraper.HtmlScraper(configuration.Configuration())
 
 
 @pytest.mark.asyncio

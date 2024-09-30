@@ -79,7 +79,7 @@ class VgLink:
         self.url = self.vgrow.url + self.__location__
 
 
-class HtmlParser:
+class HtmlScraper:
     __lang__ = '/en/'
     __tab_id__ = 'table#vg_hosts_table_id'
     __tab_data_cls0__ = 'vg_table_row_0'
@@ -88,6 +88,7 @@ class HtmlParser:
 
     def __init__(self, config):
         self.__config__: configuration.Configuration = config
+
 
         # self.__path_obj__ = self.__create_folder__()
 
@@ -160,9 +161,10 @@ class HtmlParser:
         if self.__is_row_selected__(vgrow):
             return list(filter(self.__is_link_selected__, vgrow.get_link()))
 
-    async def __link_to_file__(self, vglink: VgLink):
-        file = await self.get(vglink.url, vglink.params)
-        return vglink.filename, self.__add_data_ciphers__(file)
+    async def __link_to_file__(self, vglink: VgLink, sem: asyncio.Semaphore):
+        async with sem:
+            file = await self.get(vglink.url, vglink.params)
+            return vglink.filename, self.__add_data_ciphers__(file)
 
     async def __get_l2tp_list__(self, url):
         html_tuple = await self.__url_to_html__(url, mode='l2tp')
@@ -187,11 +189,11 @@ class HtmlParser:
 
     def process_async(self):
 
-        # loop = asyncio.get_event_loop()
-
         loop = asyncio.new_event_loop()
 
         asyncio.set_event_loop(loop)
+
+        sem = asyncio.Semaphore(self.__config__.concurrency_number)
 
         tasks = [self.__url_to_html__(self.__config__.url)]
 
@@ -206,7 +208,7 @@ class HtmlParser:
         links = itertools.chain.from_iterable(
             filter(lambda e: e is not None, loop.run_until_complete(asyncio.gather(*tasks))))
 
-        tasks = [self.__link_to_file__(l) for l in links]
+        tasks = [self.__link_to_file__(l, sem) for l in links]
 
         files = loop.run_until_complete(asyncio.gather(*tasks))
 

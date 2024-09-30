@@ -1,6 +1,6 @@
 import configuration
 import mail_sender
-import async_html_parser
+import async_html_scraper
 from flask import Flask, request, abort
 
 config_obj = configuration.Configuration()
@@ -9,7 +9,7 @@ config_obj = configuration.Configuration()
 def run_job():
     print("job start")
     c = configuration.Configuration()
-    p = async_html_parser.HtmlParser(c)
+    p = async_html_scraper.HtmlScraper(c)
     m = mail_sender.MailSender(c)
     m.send_zip(p.process_async())
     print("job done")

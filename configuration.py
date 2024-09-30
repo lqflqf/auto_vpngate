@@ -72,3 +72,7 @@ class Configuration:
     @property
     def access_key(self):
         return self.__config__['access_key']
+
+    @property
+    def concurrency_number(self):
+        return self.__config__['concurrency_number']
