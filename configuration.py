@@ -1,8 +1,5 @@
-import json
 import os
-import sqlalchemy
-import sqlalchemy.orm
-from db_model import *
+from google.cloud import firestore
 
 
 class Configuration:
@@ -10,17 +7,20 @@ class Configuration:
     country = []
 
     def __init__(self):
-        self.__db_url__ = os.environ['DATABASE_URL'].replace("postgres", "postgresql+psycopg2")
-        self.__engine__ = create_engine(self.__db_url__)
-        session = sqlalchemy.orm.Session(self.__engine__)
+        db = firestore.Client(project=os.environ["GOOGLE_CLOUD_PROJECT"])
 
-        self.mail = [i[0] for i in session.query(Mail.mail).filter(Mail.is_active == 'true').all()]
+        mail_docs = db.collection("mail").where("is_active", "==", True).stream()
 
-        self.country = [i[0] for i in session.query(Country.code_2).filter(Country.is_active == 'true').all()]
+        country_docs = db.collection("country").where("is_active", "==", True).stream()
 
-        self.__config__ = json.loads(session.query(Parameter.param_value).filter(Parameter.param_id == 'PARAM_1').one()[0])
+        param_doc = db.collection("parameter").document("param_1").get()
 
-        session.close()
+        self.mail = [(i.to_dict())["mail"] for i in mail_docs]
+
+        self.country = [(i.to_dict())["code_2"] for i in country_docs]
+
+        self.__config__ = param_doc.to_dict()
+
     @property
     def url(self):
         return self.__config__['url']
@@ -53,3 +53,26 @@ class Configuration:
     def smtp_pwd(self):
         return self.__config__['smtp_pwd']
 
+    @property
+    def trigger(self):
+        return self.__config__['trigger']
+
+    @property
+    def day_of_week(self):
+        return self.__config__['day_of_week']
+
+    @property
+    def hour(self):
+        return self.__config__['hour']
+
+    @property
+    def timezone(self):
+        return self.__config__['timezone']
+
+    @property
+    def access_key(self):
+        return self.__config__['access_key']
+
+    @property
+    def concurrency_number(self):
+        return self.__config__['concurrency_number']
