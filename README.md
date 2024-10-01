@@ -1,1 +1,1 @@
-# **get dynamic V9N everyday**
+# **Dynamic V9N everyday**
