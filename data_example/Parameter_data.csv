@@ -1,1 +1,1 @@
-PARAM_1,"'"{\'"url\'": \'"https://www.vpngate.net\'", \'"protocol\'": [\'"udp\'"], \'"session number\'": 3, \'"bandwidth\'": 10, \'"timeout\'": 300, \'"smtp_server\'": \'"smtp.gmail.com\'", \'"smtp_user\'": \'"user@gmail.com\'", \'"smtp_pwd\'": \'"password\'"}'""
+PARAM_1,"'"{\'"url\'": \'"https://www.vpngate.net\'", \'"protocol\'": [\'"udp\'"], \'"session number\'": 3, \'"bandwidth\'": 10, \'"timeout\'": 300, \'"smtp_server\'": \'"smtp.gmail.com\'", \'"smtp_user\'": \'"user@gmail.com\'", \'"smtp_pwd\'": \'"password\'", \'"concurrency_number\'": 10,}'""
