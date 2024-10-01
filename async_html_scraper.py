@@ -89,7 +89,6 @@ class HtmlScraper:
     def __init__(self, config):
         self.__config__: configuration.Configuration = config
 
-
         # self.__path_obj__ = self.__create_folder__()
 
     async def get(self, url, params=None):
