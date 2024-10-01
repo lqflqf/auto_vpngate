@@ -3,7 +3,6 @@ import async_html_scraper
 import mail_sender
 import sys
 
-
 if __name__ == '__main__':
 
     c = configuration.Configuration()
