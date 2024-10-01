@@ -1,5 +1,5 @@
 import configuration
-import async_html_parser
+import async_html_scraper
 import mail_sender
 import sys
 
@@ -11,7 +11,7 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         c.mail = sys.argv[1:]
 
-    p = async_html_parser.HtmlParser(c)
+    p = async_html_scraper.HtmlScraper(c)
 
     m = mail_sender.MailSender(c)
 

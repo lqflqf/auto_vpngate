@@ -3,15 +3,9 @@ import pytest
 
 
 @pytest.fixture()
-def db_url():
-    return os.environ['DATABASE_URL']
+def project_id():
+    return os.environ["GOOGLE_CLOUD_PROJECT"]
 
 
-def test_os_env(db_url):
-    assert db_url is not None
-
-
-def test_postgres(db_url):
-    assert "postgres" in db_url
-
-
+def test_os_env(project_id):
+    assert project_id is not None

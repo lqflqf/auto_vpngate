@@ -79,7 +79,7 @@ class VgLink:
         self.url = self.vgrow.url + self.__location__
 
 
-class HtmlParser:
+class HtmlScraper:
     __lang__ = '/en/'
     __tab_id__ = 'table#vg_hosts_table_id'
     __tab_data_cls0__ = 'vg_table_row_0'
@@ -88,6 +88,7 @@ class HtmlParser:
 
     def __init__(self, config):
         self.__config__: configuration.Configuration = config
+
 
         # self.__path_obj__ = self.__create_folder__()
 
@@ -117,8 +118,8 @@ class HtmlParser:
 
     def __is_row_selected__(self, e: VgRow):
         return e.country in self.__config__.country and \
-               e.session_number > self.__config__.session_number and \
-               e.bandwidth > self.__config__.bandwidth
+            e.session_number > self.__config__.session_number and \
+            e.bandwidth > self.__config__.bandwidth
 
     def __is_link_selected__(self, e: VgLink):
         return e.protocol in self.__config__.protocol
@@ -126,6 +127,12 @@ class HtmlParser:
     @staticmethod
     def __is_not_none__(e):
         return True if e is not None else False
+
+    @staticmethod
+    def __add_data_ciphers__(s: str) -> str:
+        s1, s2, s3 = s.partition('cipher AES-128-CBC\r\n')
+        new_line = 'data-ciphers ' + s2.split(' ')[1]
+        return s1 + s2 + new_line + s3
 
     async def __url_to_html__(self, url, mode='openvpn'):
         html = await self.get(url + self.__lang__)
@@ -154,16 +161,17 @@ class HtmlParser:
         if self.__is_row_selected__(vgrow):
             return list(filter(self.__is_link_selected__, vgrow.get_link()))
 
-    async def __link_to_file__(self, vglink: VgLink):
-        file = await self.get(vglink.url, vglink.params)
-        return vglink.filename, file
+    async def __link_to_file__(self, vglink: VgLink, sem: asyncio.Semaphore):
+        async with sem:
+            file = await self.get(vglink.url, vglink.params)
+            return vglink.filename, self.__add_data_ciphers__(file)
 
     async def __get_l2tp_list__(self, url):
         html_tuple = await self.__url_to_html__(url, mode='l2tp')
         tabrow = pyquery.PyQuery(html_tuple[1])(self.__tab_id__).eq(2)('tr')
         tablist = [r for r in tabrow.items() if \
-                r.children().hasClass(self.__tab_data_cls0__) \
-                or r.children().hasClass(self.__tab_data_cls1__)]
+                   r.children().hasClass(self.__tab_data_cls0__) \
+                   or r.children().hasClass(self.__tab_data_cls1__)]
 
         l2tp_list = []
 
@@ -179,14 +187,13 @@ class HtmlParser:
 
         return rep
 
-
     def process_async(self):
-
-        # loop = asyncio.get_event_loop()
 
         loop = asyncio.new_event_loop()
 
         asyncio.set_event_loop(loop)
+
+        sem = asyncio.Semaphore(self.__config__.concurrency_number)
 
         tasks = [self.__url_to_html__(self.__config__.url)]
 
@@ -198,13 +205,14 @@ class HtmlParser:
 
         tasks = [self.__row_to_link__(r) for r in rows]
 
-        links = itertools.chain.from_iterable(filter(lambda e: e is not None, loop.run_until_complete(asyncio.gather(*tasks))))
+        links = itertools.chain.from_iterable(
+            filter(lambda e: e is not None, loop.run_until_complete(asyncio.gather(*tasks))))
 
-        tasks = [self.__link_to_file__(l) for l in links]
+        tasks = [self.__link_to_file__(l, sem) for l in links]
 
         files = loop.run_until_complete(asyncio.gather(*tasks))
 
-        #get l2tp list
+        # get l2tp list
         tasks = [self.__get_l2tp_list__(self.__config__.url)]
 
         mail_text = loop.run_until_complete(asyncio.gather(*tasks))
