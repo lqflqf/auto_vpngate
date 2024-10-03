@@ -54,22 +54,6 @@ class Configuration:
         return self.__config__['smtp_pwd']
 
     @property
-    def trigger(self):
-        return self.__config__['trigger']
-
-    @property
-    def day_of_week(self):
-        return self.__config__['day_of_week']
-
-    @property
-    def hour(self):
-        return self.__config__['hour']
-
-    @property
-    def timezone(self):
-        return self.__config__['timezone']
-
-    @property
     def access_key(self):
         return self.__config__['access_key']
 
