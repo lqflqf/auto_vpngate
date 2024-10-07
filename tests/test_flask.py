@@ -8,14 +8,14 @@ def test_index():
     assert r.status_code == 200
 
 
-def process_1():
+def test_process_1():
     main.app.testing = True
     client = main.app.test_client()
     r = client.get('/process')
-    assert r.status_code == 401
+    assert r.status_code == 400
 
 
-def process_2():
+def test_process_2():
     main.app.testing = True
     client = main.app.test_client()
     r = client.get('/process?access_key=1234abcd')
