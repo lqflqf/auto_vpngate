@@ -5,7 +5,9 @@ import email.mime.application
 import email.mime.multipart
 import email.message
 import smtplib
+
 import configuration
+
 
 class MailSender:
     def __init__(self, config):
@@ -29,8 +31,9 @@ class MailSender:
         msg['Subject'] = 'VPN Gate ' + time_stamp
         msg['From'] = self.__config__.smtp_user
         msg['Bcc'] = ','.join(self.__config__.mail)
-        msg.set_content(mail_body)
-        msg.add_attachment(file.getvalue(), maintype='application', subtype='zip', filename='ovpn ' + time_stamp +'.zip')
+        msg.set_content(mail_body, subtype='html')
+        msg.add_attachment(file.getvalue(), maintype='application', subtype='zip',
+                           filename='ovpn ' + time_stamp + '.zip')
 
         client = smtplib.SMTP_SSL(self.__config__.smtp_server)
         client.login(smtp_user, self.__config__.smtp_pwd)

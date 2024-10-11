@@ -3,6 +3,7 @@ import itertools
 import asyncio
 import aiohttp
 import configuration
+import prettytable
 
 
 class VgRow:
@@ -178,13 +179,25 @@ class HtmlScraper:
             c = i.children()
             country = c.eq(0).text()
             ip = c.eq(1).text().split('\n')[1]
-            l2tp_list.append((country, ip))
+            sessions, uptime = c.eq(2).text().split('\n')[:2]
+            sessions = sessions.split(' ')[0]
+            bandwidth, ping = c.eq(3).text().split('\n')[:2]
+            bandwidth = bandwidth.split(' Mbps')[0]
+            ping = ping.split(': ')[1]
+            ping = ping.split(' ms')[0]
+            score = c.eq(9).text()
+            l2tp_list.append([country, ip, sessions, uptime, bandwidth, ping, score])
 
-        rep = ''
-        for l in l2tp_list:
-            rep = rep + l[0] + ' ' * 3 + l[1] + '\n'
+        return l2tp_list
 
-        return rep
+    @staticmethod
+    def __format_l2tp_list__(l2tp_list):
+        output_table = prettytable.PrettyTable()
+        output_table.title = 'L2TP servers'
+        output_table.field_names = ["CNTY", "IPAD", "Sess", "Uptime", "BW(Mbps)", "Ping(ms)", "Score"]
+        output_table.add_rows(l2tp_list)
+        output_table.hrules = prettytable.ALL
+        return output_table.get_html_string(format=True)
 
     def process_async(self):
 
@@ -214,8 +227,10 @@ class HtmlScraper:
         # get l2tp list
         tasks = [self.__get_l2tp_list__(self.__config__.url)]
 
-        mail_text = loop.run_until_complete(asyncio.gather(*tasks))
+        l2tp_list = loop.run_until_complete(asyncio.gather(*tasks))[0]
+
+        ascii_table = self.__format_l2tp_list__(l2tp_list)
 
         loop.close()
 
-        return list(filter(lambda i: i[1] is not None, files)), mail_text[0]
+        return list(filter(lambda i: i[1] is not None, files)), ascii_table

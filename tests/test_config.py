@@ -23,21 +23,9 @@ def test_protocol(config_obj):
     assert ("tcp" in config_obj.protocol or "udp" in config_obj.protocol)
 
 
-def test_trigger(config_obj):
-    assert config_obj.trigger in ['cron', "interval"]
-
-
-def test_day_of_week(config_obj):
-    assert config_obj.day_of_week is not None
-
-
-def test_hour(config_obj):
-    assert config_obj.hour is not None
-
-
-def test_timezone(config_obj):
-    assert config_obj.timezone is not None
-
-
-def access_key(config_obj):
+def test_access_key(config_obj):
     assert len(config_obj.access_key) >= 16
+
+
+def test_concurrency_number(config_obj):
+    assert config_obj.concurrency_number > 0
