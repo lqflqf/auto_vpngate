@@ -1,11 +1,16 @@
+import os
+
+import pyquery
 import pytest
+
 import async_html_scraper
 import configuration
-import pyquery
 
 
 @pytest.fixture
 def scraper():
+    if not os.getenv("GOOGLE_CLOUD_PROJECT"):
+        pytest.skip("Requires GOOGLE_CLOUD_PROJECT environment variable")
     return async_html_scraper.HtmlScraper(configuration.Configuration())
 
 

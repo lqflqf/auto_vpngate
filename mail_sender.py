@@ -1,10 +1,10 @@
-import io
-import zipfile
 import datetime
+import email.message
 import email.mime.application
 import email.mime.multipart
-import email.message
+import io
 import smtplib
+import zipfile
 
 import configuration
 
@@ -25,7 +25,8 @@ class MailSender:
     def __send_mail__(self, file: io.BytesIO, mail_body):
         smtp_user = self.__config__.smtp_user.split('@')[0]
 
-        time_stamp = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).strftime('%Y%m%d %H%M%S')
+        tz = datetime.timezone(datetime.timedelta(hours=8))
+        time_stamp = datetime.datetime.now(tz).strftime('%Y%m%d %H%M%S')
 
         msg = email.message.EmailMessage()
         msg['Subject'] = 'VPN Gate ' + time_stamp

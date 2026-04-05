@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock, patch
+
 import main
 
 
@@ -18,5 +20,8 @@ def test_process_1():
 def test_process_2():
     main.app.testing = True
     client = main.app.test_client()
-    r = client.get('/process?access_key=1234abcd')
+    mock_config = MagicMock()
+    mock_config.access_key = "valid_key"
+    with patch("main.get_config", return_value=mock_config):
+        r = client.get('/process?access_key=1234abcd')
     assert r.status_code == 401

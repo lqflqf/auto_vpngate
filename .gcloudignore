@@ -1,0 +1,21 @@
+# Files not uploaded to Google Cloud App Engine.
+# See: gcloud topic gcloudignore
+
+# Include .gitignore rules
+#!include:.gitignore
+
+# gcloud & git metadata
+.gcloudignore
+.git
+.gitignore
+
+# Development only
+.venv/
+.env
+.env.*
+tests/
+data_example/
+
+# uv lockfile and project config (not needed at runtime)
+uv.lock
+pyproject.toml

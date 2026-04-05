@@ -1,7 +1,8 @@
-import configuration
-import async_html_scraper
-import mail_sender
 import sys
+
+import async_html_scraper
+import configuration
+import mail_sender
 
 if __name__ == '__main__':
 

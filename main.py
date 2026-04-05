@@ -1,9 +1,17 @@
+from flask import Flask, abort, request
+
+import async_html_scraper
 import configuration
 import mail_sender
-import async_html_scraper
-from flask import Flask, request, abort
 
-config_obj = configuration.Configuration()
+_config_obj: configuration.Configuration | None = None
+
+
+def get_config() -> configuration.Configuration:
+    global _config_obj
+    if _config_obj is None:
+        _config_obj = configuration.Configuration()
+    return _config_obj
 
 
 def run_job():
@@ -27,7 +35,7 @@ def hello():
 @app.route('/process')
 def process():
     access_key = request.args['access_key']
-    if access_key == config_obj.access_key:
+    if access_key == get_config().access_key:
         run_job()
         return 'Job Done'
     else:

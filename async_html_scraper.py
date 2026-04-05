@@ -1,9 +1,11 @@
-import pyquery
-import itertools
 import asyncio
+import itertools
+
 import aiohttp
-import configuration
 import prettytable
+import pyquery
+
+import configuration
 
 
 class VgRow:
@@ -196,7 +198,7 @@ class HtmlScraper:
         output_table.title = 'L2TP servers'
         output_table.field_names = ["CNTY", "IPAD", "Sess", "Uptime", "BW(Mbps)", "Ping(ms)", "Score"]
         output_table.add_rows(l2tp_list)
-        output_table.hrules = prettytable.ALL
+        output_table.hrules = prettytable.HRuleStyle.ALL
         return output_table.get_html_string(format=True)
 
     def process_async(self):
@@ -220,7 +222,7 @@ class HtmlScraper:
         links = itertools.chain.from_iterable(
             filter(lambda e: e is not None, loop.run_until_complete(asyncio.gather(*tasks))))
 
-        tasks = [self.__link_to_file__(l, sem) for l in links]
+        tasks = [self.__link_to_file__(link, sem) for link in links]
 
         files = loop.run_until_complete(asyncio.gather(*tasks))
 

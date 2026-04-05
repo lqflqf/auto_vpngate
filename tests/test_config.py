@@ -1,9 +1,14 @@
+import os
+
 import pytest
+
 import configuration
 
 
 @pytest.fixture
 def config_obj():
+    if not os.getenv("GOOGLE_CLOUD_PROJECT"):
+        pytest.skip("Requires GOOGLE_CLOUD_PROJECT environment variable")
     return configuration.Configuration()
 
 
@@ -16,7 +21,9 @@ def test_mail(config_obj):
 
 
 def test_smtp(config_obj):
-    assert (config_obj.smtp_server is not None and config_obj.smtp_user is not None and config_obj.smtp_pwd is not None)
+    assert config_obj.smtp_server is not None
+    assert config_obj.smtp_user is not None
+    assert config_obj.smtp_pwd is not None
 
 
 def test_protocol(config_obj):

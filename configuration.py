@@ -1,25 +1,28 @@
 import os
+from typing import Any, cast
+
 from google.cloud import firestore
+from google.cloud.firestore_v1 import DocumentSnapshot
 
 
 class Configuration:
-    mail = []
-    country = []
+    mail: list[str] = []
+    country: list[str] = []
 
     def __init__(self):
         db = firestore.Client(project=os.environ["GOOGLE_CLOUD_PROJECT"])
 
-        mail_docs = db.collection("mail").where("is_active", "==", True).stream()
+        mail_docs = db.collection("mail").where(filter=firestore.FieldFilter("is_active", "==", True)).stream()
+        country_docs = db.collection("country").where(filter=firestore.FieldFilter("is_active", "==", True)).stream()
+        param_doc = cast(DocumentSnapshot, db.collection("parameter").document("param_1").get())
 
-        country_docs = db.collection("country").where("is_active", "==", True).stream()
+        self.mail = [d["mail"] for i in mail_docs if (d := i.to_dict()) is not None]
+        self.country = [d["code_2"] for i in country_docs if (d := i.to_dict()) is not None]
 
-        param_doc = db.collection("parameter").document("param_1").get()
-
-        self.mail = [(i.to_dict())["mail"] for i in mail_docs]
-
-        self.country = [(i.to_dict())["code_2"] for i in country_docs]
-
-        self.__config__ = param_doc.to_dict()
+        config = param_doc.to_dict()
+        if config is None:
+            raise ValueError("param_1 document not found or has no data")
+        self.__config__: dict[str, Any] = config
 
     @property
     def url(self):
