@@ -81,8 +81,7 @@ class VgLink:
             self.params["port"] = self.vgrow.udp
 
         self.filename = (
-            f"{self.vgrow.country}_{self.vgrow.ip}_{self.protocol}"
-            f"_{self.params['port']}_{self.vgrow.score}.ovpn"
+            f"{self.vgrow.country}_{self.vgrow.ip}_{self.protocol}_{self.params['port']}_{self.vgrow.score}.ovpn"
         )
         self.url = self.vgrow.url + self._location
 

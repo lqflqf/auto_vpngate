@@ -4,6 +4,7 @@ import io
 import logging
 import smtplib
 import zipfile
+import zoneinfo
 
 import configuration
 
@@ -23,7 +24,8 @@ class MailSender:
         return buffer
 
     def _send_mail(self, file: io.BytesIO, mail_body: str) -> None:
-        time_stamp = datetime.datetime.now(datetime.UTC).strftime("%Y%m%d %H%M%S")
+        tz = zoneinfo.ZoneInfo("Asia/Shanghai")
+        time_stamp = datetime.datetime.now(tz).strftime("%Y%m%d %H%M%S%z")
 
         msg = email.message.EmailMessage()
         msg["Subject"] = "VPN Gate " + time_stamp

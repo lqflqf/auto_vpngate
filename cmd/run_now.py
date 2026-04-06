@@ -4,8 +4,7 @@ import async_html_scraper
 import configuration
 import mail_sender
 
-if __name__ == '__main__':
-
+if __name__ == "__main__":
     c = configuration.Configuration()
 
     if len(sys.argv) > 1:
