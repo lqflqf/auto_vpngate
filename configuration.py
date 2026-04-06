@@ -6,10 +6,10 @@ from google.cloud.firestore_v1 import DocumentSnapshot
 
 
 class Configuration:
-    mail: list[str] = []
-    country: list[str] = []
-
     def __init__(self):
+        self.mail: list[str] = []
+        self.country: list[str] = []
+
         db = firestore.Client(project=os.environ["GOOGLE_CLOUD_PROJECT"])
 
         mail_docs = db.collection("mail").where(filter=firestore.FieldFilter("is_active", "==", True)).stream()
@@ -22,44 +22,50 @@ class Configuration:
         config = param_doc.to_dict()
         if config is None:
             raise ValueError("param_1 document not found or has no data")
-        self.__config__: dict[str, Any] = config
+        self._config: dict[str, Any] = config
+
+    def _field(self, key: str) -> Any:
+        try:
+            return self._config[key]
+        except KeyError:
+            raise ValueError(f"Missing '{key}' field in Firestore parameter document") from None
 
     @property
-    def url(self):
-        return self.__config__['url']
+    def url(self) -> str:
+        return self._field("url")
 
     @property
-    def protocol(self):
-        return self.__config__['protocol']
+    def protocol(self) -> str:
+        return self._field("protocol")
 
     @property
-    def session_number(self):
-        return self.__config__['session number']
+    def session_number(self) -> int:
+        return self._field("session number")
 
     @property
-    def bandwidth(self):
-        return self.__config__['bandwidth']
+    def bandwidth(self) -> float:
+        return self._field("bandwidth")
 
     @property
-    def timeout(self):
-        return self.__config__['timeout']
+    def timeout(self) -> float:
+        return self._field("timeout")
 
     @property
-    def smtp_server(self):
-        return self.__config__['smtp_server']
+    def smtp_server(self) -> str:
+        return self._field("smtp_server")
 
     @property
-    def smtp_user(self):
-        return self.__config__['smtp_user']
+    def smtp_user(self) -> str:
+        return self._field("smtp_user")
 
     @property
-    def smtp_pwd(self):
-        return self.__config__['smtp_pwd']
+    def smtp_pwd(self) -> str:
+        return self._field("smtp_pwd")
 
     @property
-    def access_key(self):
-        return self.__config__['access_key']
+    def access_key(self) -> str:
+        return self._field("access_key")
 
     @property
-    def concurrency_number(self):
-        return self.__config__['concurrency_number']
+    def concurrency_number(self) -> int:
+        return self._field("concurrency_number")

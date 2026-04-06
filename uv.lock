@@ -104,15 +104,15 @@ dependencies = [
     { name = "aiohttp" },
     { name = "flask" },
     { name = "google-cloud-firestore" },
+    { name = "gunicorn" },
     { name = "prettytable" },
     { name = "pyquery" },
-    { name = "pytest-asyncio" },
-    { name = "requests" },
 ]
 
 [package.dev-dependencies]
 dev = [
-    { name = "gunicorn" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
     { name = "python-dotenv" },
 ]
 
@@ -122,15 +122,15 @@ requires-dist = [
     { name = "aiohttp" },
     { name = "flask" },
     { name = "google-cloud-firestore" },
+    { name = "gunicorn" },
     { name = "prettytable" },
     { name = "pyquery" },
-    { name = "pytest-asyncio" },
-    { name = "requests" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "gunicorn" },
+    { name = "pytest", specifier = ">=9.0" },
+    { name = "pytest-asyncio", specifier = ">=1.0" },
     { name = "python-dotenv", specifier = ">=1.2.2" },
 ]
 

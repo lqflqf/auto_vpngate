@@ -23,9 +23,7 @@ charset-normalizer==3.4.7
 click==8.3.2
     # via flask
 colorama==0.4.6 ; sys_platform == 'win32'
-    # via
-    #   click
-    #   pytest
+    # via click
 cryptography==46.0.6
     # via google-auth
 cssselect==1.4.0
@@ -60,12 +58,12 @@ grpcio==1.80.0
     #   grpcio-status
 grpcio-status==1.80.0
     # via google-api-core
+gunicorn==25.3.0
+    # via auto-vpngate
 idna==3.11
     # via
     #   requests
     #   yarl
-iniconfig==2.3.0
-    # via pytest
 itsdangerous==2.2.0
     # via flask
 jinja2==3.1.6
@@ -82,9 +80,7 @@ multidict==6.7.1
     #   aiohttp
     #   yarl
 packaging==26.0
-    # via pytest
-pluggy==1.6.0
-    # via pytest
+    # via gunicorn
 prettytable==3.17.0
     # via auto-vpngate
 propcache==0.4.1
@@ -110,18 +106,10 @@ pycares==5.0.1
     # via aiodns
 pycparser==3.0 ; implementation_name != 'PyPy'
     # via cffi
-pygments==2.20.0
-    # via pytest
 pyquery==2.0.1
     # via auto-vpngate
-pytest==9.0.2
-    # via pytest-asyncio
-pytest-asyncio==1.3.0
-    # via auto-vpngate
 requests==2.33.1
-    # via
-    #   auto-vpngate
-    #   google-api-core
+    # via google-api-core
 typing-extensions==4.15.0
     # via grpcio
 urllib3==2.6.3

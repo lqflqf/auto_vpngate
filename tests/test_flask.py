@@ -6,22 +6,42 @@ import main
 def test_index():
     main.app.testing = True
     client = main.app.test_client()
-    r = client.get('/')
+    r = client.get("/")
     assert r.status_code == 200
 
 
-def test_process_1():
+def test_process_no_key():
     main.app.testing = True
     client = main.app.test_client()
-    r = client.get('/process')
+    r = client.get("/process")
     assert r.status_code == 400
 
 
-def test_process_2():
+def test_process_wrong_key():
     main.app.testing = True
     client = main.app.test_client()
     mock_config = MagicMock()
     mock_config.access_key = "valid_key"
     with patch("main.get_config", return_value=mock_config):
-        r = client.get('/process?access_key=1234abcd')
+        r = client.get("/process?access_key=1234abcd")
     assert r.status_code == 401
+
+
+def test_process_correct_key():
+    main.app.testing = True
+    client = main.app.test_client()
+    mock_config = MagicMock()
+    mock_config.access_key = "valid_key"
+    with patch("main.get_config", return_value=mock_config), patch("main.run_job") as mock_run:
+        r = client.get("/process?access_key=valid_key")
+    assert r.status_code == 200
+    mock_run.assert_called_once()
+
+
+def test_process_cron_header():
+    main.app.testing = True
+    client = main.app.test_client()
+    with patch("main.run_job") as mock_run:
+        r = client.get("/process", headers={"X-Appengine-Cron": "true"})
+    assert r.status_code == 200
+    mock_run.assert_called_once()

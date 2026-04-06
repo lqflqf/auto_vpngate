@@ -6,16 +6,16 @@ dependencies = [
     "pyquery",
     "aiohttp",
     "aiodns",
-    "requests",
-    "pytest-asyncio",
     "google-cloud-firestore",
     "flask",
     "prettytable",
+    "gunicorn",
 ]
 
 [dependency-groups]
 dev = [
-    "gunicorn",
+    "pytest>=9.0",
+    "pytest-asyncio>=1.0",
     "python-dotenv>=1.2.2",
 ]
 
@@ -29,3 +29,4 @@ select = ["E", "F", "I", "UP"]
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "session"
+markers = ["integration: marks tests that require external services (Firestore, network)"]
