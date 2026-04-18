@@ -24,7 +24,7 @@ click==8.3.2
     # via flask
 colorama==0.4.6 ; sys_platform == 'win32'
     # via click
-cryptography==46.0.6
+cryptography==46.0.7
     # via google-auth
 cssselect==1.4.0
     # via pyquery
