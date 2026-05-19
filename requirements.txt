@@ -60,7 +60,7 @@ grpcio-status==1.80.0
     # via google-api-core
 gunicorn==25.3.0
     # via auto-vpngate
-idna==3.11
+idna==3.15
     # via
     #   requests
     #   yarl
